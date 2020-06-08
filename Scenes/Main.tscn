@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Main.cs" type="Script" id=2]
+[ext_resource path="res://GFX/StarField/starfield-01.jpg" type="Texture" id=3]
+
+[node name="Main" type="Node2D"]
+position = Vector2( -0.0133295, -0.00679302 )
+script = ExtResource( 2 )
+
+[node name="Starfield" type="Sprite" parent="."]
+position = Vector2( 320.013, 180.007 )
+scale = Vector2( 1, 0.843091 )
+texture = ExtResource( 3 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 320.013, 256.007 )
+
+[node name="RockSpawnLocations" type="Node" parent="."]
+
+[node name="Position1" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 64, 64 )
+
+[node name="Position2" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 64, 192 )
+
+[node name="Position3" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 64, 320 )
+
+[node name="Position4" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 576, 320 )
+
+[node name="Position5" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 576, 192 )
+
+[node name="Position6" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 576, 64 )
+
+[node name="Position7" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 320, 64 )
+
+[node name="Position8" type="Position2D" parent="RockSpawnLocations"]
+position = Vector2( 320, 360 )
+
+[node name="RockContainer" type="Node" parent="."]

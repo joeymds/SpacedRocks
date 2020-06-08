@@ -1,0 +1,153 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+using SpacedRocks.Common;
+
+public class Rock : KinematicBody2D
+{
+    private Vector2 _screenSize = Vector2.Zero;
+    private ScreenWrap _screenWrap;
+    private Sprite _rockSprite;
+    private double _rotationSpeed;
+    private Vector2 _spriteSize = Vector2.Zero;
+    private Texture _texture;
+    private CollisionShape2D _collision;
+    private Particles2D _puff;
+    
+    public enum RockSizes
+    {
+        Tiny,
+        Small,
+        Medium,
+        Large,
+        Dead
+    };
+    
+    [Signal]
+    public delegate void Death();
+    
+    public Vector2 _velocity = Vector2.Zero;
+    private readonly Dictionary<RockSizes, string> _rocks = new Dictionary<RockSizes, string>();
+
+    [Export()] public RockSizes _rockSize = RockSizes.Large;
+    [Export()] public Vector2 _startPosition = Vector2.Zero;
+    [Export()] private Vector2 _initVelocity = Vector2.Zero;
+    [Export()] private double _bounce = 0.8;
+
+    public override void _Ready()
+    {
+        _puff = GetNode<Particles2D>("Puff");
+
+        AddToGroup("Rocks");
+        PopulateDictionary();
+        _screenSize = GetViewportRect().Size;
+        _screenWrap = new ScreenWrap(_screenSize, 8);
+        InitRock(_initVelocity);
+    }    
+
+    public void InitRock(Vector2 velocity)
+    {
+        var rand = new Random();
+        _velocity = velocity.Length() > 0 ? velocity : new Vector2(rand.Next(30, 100), 0).Rotated(RandomRadian());
+        _rotationSpeed = rand.Next(-3, 3);
+        
+        LoadTexture();
+        AttachCollisionShape();
+        
+        if (_startPosition == Vector2.Zero)
+            _startPosition = _screenSize / 2;
+        Position = _startPosition;
+    }
+    
+    private void LoadTexture()
+    {
+        _texture = ResourceLoader.Load(_rocks[_rockSize]) as Texture;
+        _rockSprite = GetNode<Sprite>("Sprite");
+        _rockSprite.Texture = _texture;
+        _spriteSize = _texture.GetSize();
+    }
+
+    private void AttachCollisionShape()
+    {
+        _collision = GetNode<CollisionShape2D>("CollisionShape");
+        _collision.Shape = new CircleShape2D {Radius = Math.Min(_texture.GetWidth() / 2, _texture.GetHeight() / 2)};
+    }
+    
+    private void PopulateDictionary()
+    {
+        _rocks.Add(RockSizes.Large, GetRockSprite(RockSizes.Large));
+        _rocks.Add(RockSizes.Medium, GetRockSprite(RockSizes.Medium));
+        _rocks.Add(RockSizes.Small, GetRockSprite(RockSizes.Small));
+        _rocks.Add(RockSizes.Tiny, GetRockSprite(RockSizes.Tiny));
+        _rocks.Add(RockSizes.Dead, "");
+    }
+
+    private static string GetRockSprite(RockSizes size)
+    {
+        Random rndRockImage = new Random();
+        var imageIndex = rndRockImage.Next(1, 3);
+        var rockImageSprite = $"res://GFX/Rocks/large-rock-{imageIndex}.png";
+        switch (size)
+        {
+            case RockSizes.Large:
+                rockImageSprite = $"res://GFX/Rocks/large-rock-{imageIndex}.png";
+                break;
+            case RockSizes.Medium:
+                rockImageSprite = $"res://GFX/Rocks/medium-rock-{imageIndex}.png";
+                break;
+            case RockSizes.Small:
+                rockImageSprite = $"res://GFX/Rocks/small-rock-{imageIndex}.png";
+                break;
+            case RockSizes.Tiny:
+                rockImageSprite = $"res://GFX/Rocks/tiny-rock-{imageIndex}.png";
+                break;
+        }
+        return rockImageSprite;
+    }
+    
+    
+    public override void _PhysicsProcess(float delta)
+    {
+        _velocity = _velocity.Clamped(300);
+        Rotation += (float)_rotationSpeed * delta;
+        var collision = MoveAndCollide(_velocity * delta, false, true, false);
+        if (collision != null)
+        {
+            _velocity = _velocity.Bounce(collision.Normal) * (float)_bounce;
+            _puff.GlobalPosition = collision.Position;
+            _puff.Emitting = true;
+        }
+        Position = _screenWrap.WrappedPosition(Position, _spriteSize);
+    }
+    
+    public void Explode(Rock.RockSizes size, Vector2 velocity, Vector2 hitVelocity)
+    {
+        ShowExplosion();
+        PlayExplosionSound();
+        EmitSignal("Death", size, Position, velocity, hitVelocity);
+        QueueFree();
+    }
+
+    private void ShowExplosion()
+    {
+        var explosionScene = (PackedScene)ResourceLoader.Load("res://Scenes/Explosion.tscn");
+        var explosion = (Node2D)explosionScene.Instance();
+        GetTree().Root.AddChild(explosion);
+        explosion.GlobalPosition = Position;
+    }
+    
+    private void PlayExplosionSound()
+    {
+        var explosionScene = (PackedScene)ResourceLoader.Load("res://Scenes/RockExplosion.tscn");
+        var explosion = (Node2D)explosionScene.Instance();
+        GetTree().Root.AddChild(explosion);
+        explosion.GlobalPosition = Position;
+    }
+
+    private static float RandomRadian()
+    {
+        var random = new Random();
+        return (float)(Math.PI / 180) * random.Next(1, 359);
+    }
+    
+}

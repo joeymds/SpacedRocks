@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/rock-explosion-1.ogg-92327a6804d78d71fcc7e2fdd7cdda91.oggstr"
+
+[deps]
+
+source_file="res://SFX/explosions/rock-explosion-1.ogg"
+dest_files=[ "res://.import/rock-explosion-1.ogg-92327a6804d78d71fcc7e2fdd7cdda91.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
