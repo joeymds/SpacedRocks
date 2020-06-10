@@ -19,6 +19,10 @@ config/name="Spaced Rocks"
 run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://GFX/Player/icon.png"
 
+[autoload]
+
+Global="*res://Global.cs"
+
 [display]
 
 window/size/width=640
