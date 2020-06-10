@@ -61,7 +61,6 @@
     <Compile Include="Scenes\PlayerBullet.cs" />
     <Compile Include="Scenes\Rock.cs" />
     <Compile Include="Scenes\RockExplosion.cs" />
-    <Compile Include="Scenes\Shield.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enemy" />

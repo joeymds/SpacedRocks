@@ -9,8 +9,9 @@ position = Vector2( -0.0133295, -0.00679302 )
 script = ExtResource( 2 )
 
 [node name="Starfield" type="Sprite" parent="."]
-position = Vector2( 320.013, 180.007 )
-scale = Vector2( 1, 0.843091 )
+modulate = Color( 0.435294, 0.737255, 0.901961, 1 )
+position = Vector2( 321.207, 180.003 )
+scale = Vector2( 0.503069, 0.500009 )
 texture = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
