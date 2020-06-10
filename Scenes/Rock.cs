@@ -23,11 +23,13 @@ public class Rock : KinematicBody2D
         Dead
     };
     
+    public readonly Dictionary<RockSizes, string> _rocks = new Dictionary<RockSizes, string>();
+
     [Signal]
     public delegate void Death();
     
     public Vector2 _velocity = Vector2.Zero;
-    private readonly Dictionary<RockSizes, string> _rocks = new Dictionary<RockSizes, string>();
+    
 
     [Export()] public RockSizes _rockSize = RockSizes.Large;
     [Export()] public Vector2 _startPosition = Vector2.Zero;

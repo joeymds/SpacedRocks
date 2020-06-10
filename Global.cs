@@ -23,7 +23,7 @@ public class Global : Node2D
 
     public void UpdateScore(int updateValue)
     {
-        PlayerScore = updateValue;
+        PlayerScore += updateValue;
     }
 
 }
