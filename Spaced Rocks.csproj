@@ -62,9 +62,7 @@
     <Compile Include="Scenes\PlayerBullet.cs" />
     <Compile Include="Scenes\Rock.cs" />
     <Compile Include="Scenes\RockExplosion.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enemy" />
+    <Compile Include="Scenes\UI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
