@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Spaced Rocks"
-run/main_scene="res://Scenes/Main.tscn"
+run/main_scene="res://Scenes/Game.tscn"
 config/icon="res://GFX/Player/icon.png"
 
 [autoload]

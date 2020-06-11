@@ -3,19 +3,31 @@ using System.Collections.Generic;
 
 public class Main : Node2D
 {
+
     private PackedScene spaceRockScene;
     private Node _rockSpawnLocations;
     private Node _rockContainer;
+    private int _totalNumberOfRocks;
+    private int _levelRockCount;
+    private Global _global;
+    private CountDown _countDown;
     private Dictionary<Rock.RockSizes, Rock.RockSizes> _breakPattern = new Dictionary<Rock.RockSizes, Rock.RockSizes>();
     
     public override void _Ready()
     {
+        AddToGroup("Main");
         PopulateDictionary();
+        _global = GetTree().Root.GetNode<Global>("Global");
         _rockSpawnLocations = GetNode<Node>("RockSpawnLocations");
         _rockContainer = GetNode<Node>("RockContainer");
-        spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
+        _countDown = GetNode<CountDown>("CountDown");
         
-        for (var i = 0; i < 2; i++)
+        spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
+        _totalNumberOfRocks = _global.Level.NumberOfRocks;
+        _levelRockCount = _global.Level.NumberOfRocks;
+        _countDown.Visible = false;
+        
+        for (var i = 0; i < _totalNumberOfRocks; i++)
             SpawnRock(Rock.RockSizes.Large, _rockSpawnLocations.GetChild<Position2D>(i).Position, Vector2.Zero);
         
     }
@@ -27,8 +39,8 @@ public class Main : Node2D
         _breakPattern.Add(Rock.RockSizes.Small, Rock.RockSizes.Tiny);
         _breakPattern.Add(Rock.RockSizes.Tiny, Rock.RockSizes.Dead);
     }
-    
-    public void SpawnRock(Rock.RockSizes rockSize, Vector2 position, Vector2 velocity)
+
+    private void SpawnRock(Rock.RockSizes rockSize, Vector2 position, Vector2 velocity)
     {
         var spaceRock = (Rock) spaceRockScene.Instance();
         _rockContainer.AddChild(spaceRock);
@@ -45,9 +57,28 @@ public class Main : Node2D
         if (newSize == Rock.RockSizes.Dead) return;
         foreach (var offset in offsets)
         {
+            UpdateRockLevel(1);
             var newPosition = position + hitVelocity.Tangent().Clamped(25) * offset;
             var newVelocity = (velocity + hitVelocity.Tangent()) * offset;
             SpawnRock(newSize, newPosition, newVelocity);
         }
+    }
+
+    public void UpdateRockLevel(int rocks)
+    {
+        _levelRockCount += rocks;
+        if (_levelRockCount <= 0)
+        {
+            GetTree().CallGroup("Global", "FinishedLevel");
+            _countDown.Visible = true;
+            _countDown.StartCountDown();
+        }
+    }
+
+    private void CountDownComplete()
+    {
+        QueueFree();
+        GetTree().CallGroup("Global", "AdvanceLevel");
+        GetTree().ChangeScene("res://Scenes/Main.tscn");
     }
 }

@@ -127,6 +127,7 @@ public class Rock : KinematicBody2D
         ShowExplosion();
         PlayExplosionSound();
         EmitSignal("Death", size, Position, velocity, hitVelocity);
+        GetTree().CallGroup("Main", "UpdateRockLevel", -1);
         QueueFree();
     }
 

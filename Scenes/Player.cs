@@ -23,6 +23,7 @@ public class Player : Area2D
     private Vector2 _screenSize = Vector2.Zero;
     private Vector2 _velocity = Vector2.Zero;
 
+    private Global _global;
     private AnimatedSprite _shipSprite;
     private AudioStreamPlayer _shootSound;
     private AudioStreamPlayer _thrustAudio;
@@ -35,6 +36,7 @@ public class Player : Area2D
 
     public override void _Ready()
     {
+        _global = GetTree().Root.GetNode<Global>("Global");
         _shipSprite = GetNode<AnimatedSprite>("Ship");
         _bulletContainer = GetNode<Node>("BulletContainer");
         Muzzle = GetNode<Position2D>("Muzzle");
@@ -52,6 +54,12 @@ public class Player : Area2D
 
     public override void _Process(float delta)
     {
+        if (_global.LevelState == Global.LevelStates.Complete)
+        {
+            StateDisabled(delta);
+            return;
+        }
+            
         switch (_playerState)
         {
             case PlayerStates.normal:
