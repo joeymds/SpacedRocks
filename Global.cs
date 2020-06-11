@@ -1,11 +1,13 @@
 using Godot;
 using System;
+using System.Security.Principal;
 
 public class Global : Node2D
 {
 
     public int ShieldStrength { get; set; }
     public int PlayerScore { get; set; }
+    public int RockCount { get; set; }
     
     public override void _Ready()
     {
@@ -24,6 +26,11 @@ public class Global : Node2D
     public void UpdateScore(int updateValue)
     {
         PlayerScore += updateValue;
+    }
+
+    public void UpdateRockCount(int rockCount)
+    {
+        RockCount = rockCount;
     }
 
 }

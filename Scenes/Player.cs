@@ -11,6 +11,15 @@ public class Player : Area2D
     [Export()] public double Friction = 0.01;
     [Export()] public PackedScene _bullet;
 
+    private enum PlayerStates
+    {
+        disabled,
+        normal,
+        dead
+    }
+
+    private PlayerStates _playerState = PlayerStates.normal;
+
     private Vector2 _screenSize = Vector2.Zero;
     private Vector2 _velocity = Vector2.Zero;
 
@@ -43,6 +52,25 @@ public class Player : Area2D
 
     public override void _Process(float delta)
     {
+        switch (_playerState)
+        {
+            case PlayerStates.normal:
+                StateNormal(delta);
+                break;
+            case PlayerStates.dead:
+                StateDead(delta);
+                break;
+            case PlayerStates.disabled:
+                StateDisabled(delta);
+                break;
+            default:
+                StateDisabled(delta);
+                break;
+        }
+    }
+
+    private void StateNormal(float delta)
+    {
         if (Input.IsActionPressed("shoot"))
             if (_gunTimer.TimeLeft == 0)
                 Shoot();
@@ -72,9 +100,18 @@ public class Player : Area2D
         
         Position += _velocity * Thrust * delta;
         Position = _screenWrap.WrappedPosition(Position);
-       
     }
 
+    private void StateDisabled(float delta)
+    {
+        
+    }
+
+    private void StateDead(float delta)
+    {
+        
+    }
+    
     private void Shoot()
     {
         _gunTimer.Start();

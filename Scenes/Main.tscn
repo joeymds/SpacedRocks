@@ -47,22 +47,8 @@ position = Vector2( 320, 360 )
 [node name="RockContainer" type="Node" parent="."]
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
-margin_left = 226.088
-margin_top = 1.81175e-05
-margin_right = 414.088
-margin_bottom = 38.0
-
-[node name="HBoxContainer" parent="UI" index="0"]
-margin_top = 0.0
-margin_right = 188.0
-margin_bottom = 38.0
-
-[node name="Score" parent="UI/HBoxContainer" index="0"]
-margin_left = 0.0
-margin_right = 116.0
-
-[node name="Shield" parent="UI/HBoxContainer" index="1"]
-margin_left = 126.0
-margin_right = 188.0
+margin_right = 640.0
+margin_bottom = 55.0
+size_flags_horizontal = 3
 
 [editable path="UI"]
