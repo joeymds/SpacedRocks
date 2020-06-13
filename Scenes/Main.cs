@@ -1,26 +1,28 @@
 using Godot;
 using System.Collections.Generic;
 
-public class Main : Node2D
+public class Main : Node
 {
-
+    private Global _global;
     private PackedScene spaceRockScene;
     private Node _rockSpawnLocations;
     private Node _rockContainer;
     private int _totalNumberOfRocks;
     private int _levelRockCount;
-    private Global _global;
     private CountDown _countDown;
+    private AudioStreamPlayer _gameTrack;
     private Dictionary<Rock.RockSizes, Rock.RockSizes> _breakPattern = new Dictionary<Rock.RockSizes, Rock.RockSizes>();
     
     public override void _Ready()
     {
         AddToGroup("Main");
         PopulateDictionary();
+        
         _global = GetTree().Root.GetNode<Global>("Global");
         _rockSpawnLocations = GetNode<Node>("RockSpawnLocations");
         _rockContainer = GetNode<Node>("RockContainer");
         _countDown = GetNode<CountDown>("CountDown");
+        _gameTrack = GetNode<AudioStreamPlayer>("GameTrack");
         
         spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
         _totalNumberOfRocks = _global.Level.NumberOfRocks;
@@ -29,6 +31,8 @@ public class Main : Node2D
         
         for (var i = 0; i < _totalNumberOfRocks; i++)
             SpawnRock(Rock.RockSizes.Large, _rockSpawnLocations.GetChild<Position2D>(i).Position, Vector2.Zero);
+        
+        _gameTrack.Play();    
         
     }
 

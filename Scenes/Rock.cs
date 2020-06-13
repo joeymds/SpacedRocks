@@ -59,6 +59,7 @@ public class Rock : KinematicBody2D
         if (_startPosition == Vector2.Zero)
             _startPosition = _screenSize / 2;
         Position = _startPosition;
+  
     }
     
     private void LoadTexture()
@@ -110,11 +111,12 @@ public class Rock : KinematicBody2D
     
     public override void _PhysicsProcess(float delta)
     {
-        _velocity = _velocity.Clamped(300);
+        _velocity = _velocity.Clamped(500);
         Rotation += (float)_rotationSpeed * delta;
         var collision = MoveAndCollide(_velocity * delta, false, true, false);
         if (collision != null)
         {
+            GD.Print("Collided");
             _velocity = _velocity.Bounce(collision.Normal) * (float)_bounce;
             _puff.GlobalPosition = collision.Position;
             _puff.Emitting = true;

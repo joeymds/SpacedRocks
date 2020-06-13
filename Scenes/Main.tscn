@@ -1,13 +1,21 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Main.cs" type="Script" id=2]
 [ext_resource path="res://GFX/StarField/starfield-01.jpg" type="Texture" id=3]
 [ext_resource path="res://Scenes/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/CountDown.tscn" type="PackedScene" id=5]
+[ext_resource path="res://SFX/Tracks/ES_Unfriendly Users - Marten Moses.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Scenes/Pause.cs" type="Script" id=7]
+[ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=8]
 
-[node name="Main" type="Node2D"]
-position = Vector2( -0.0133295, -0.00679302 )
+[sub_resource type="DynamicFont" id=1]
+size = 32
+outline_size = 2
+outline_color = Color( 0.341176, 0.701961, 0.968627, 1 )
+font_data = ExtResource( 8 )
+
+[node name="Main" type="Node"]
 script = ExtResource( 2 )
 
 [node name="Starfield" type="Sprite" parent="."]
@@ -15,9 +23,6 @@ modulate = Color( 0.435294, 0.737255, 0.901961, 1 )
 position = Vector2( 321.207, 180.003 )
 scale = Vector2( 0.503069, 0.500009 )
 texture = ExtResource( 3 )
-
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 320.013, 256.007 )
 
 [node name="RockSpawnLocations" type="Node" parent="."]
 
@@ -45,27 +50,10 @@ position = Vector2( 320, 64 )
 [node name="Position8" type="Position2D" parent="RockSpawnLocations"]
 position = Vector2( 320, 360 )
 
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 320.013, 256.007 )
+
 [node name="RockContainer" type="Node" parent="."]
-
-[node name="UI" parent="." instance=ExtResource( 4 )]
-margin_right = 640.0
-margin_bottom = 55.0
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" parent="UI" index="0"]
-margin_bottom = 45.0
-
-[node name="Score" parent="UI/HBoxContainer" index="0"]
-margin_bottom = 35.0
-
-[node name="ScoreText" parent="UI/HBoxContainer/Score" index="1"]
-custom_colors/font_color = Color( 0.376471, 0.666667, 0.94902, 1 )
-
-[node name="Level" parent="UI/HBoxContainer" index="1"]
-margin_bottom = 35.0
-
-[node name="Shield" parent="UI/HBoxContainer" index="2"]
-margin_bottom = 35.0
 
 [node name="CountDown" parent="." instance=ExtResource( 5 )]
 
@@ -75,6 +63,52 @@ margin_right = 296.0
 rect_scale = Vector2( 1, 1 )
 text = "1"
 
-[editable path="UI"]
+[node name="UI" parent="." instance=ExtResource( 4 )]
+margin_bottom = 54.0
+size_flags_horizontal = 3
+
+[node name="ScoreText" parent="UI/HBoxContainer/Score" index="1"]
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+
+[node name="ShieldText" parent="UI/HBoxContainer/Shield" index="1"]
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+
+[node name="GameTrack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Pause" type="Control" parent="CanvasLayer"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Pause"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.352941 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Pause"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+
+[node name="Label" type="Label" parent="CanvasLayer/Pause/CenterContainer"]
+margin_left = 255.0
+margin_right = 384.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 1 )
+text = "Paused"
 
 [editable path="CountDown"]
+
+[editable path="UI"]

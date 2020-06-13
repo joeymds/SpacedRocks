@@ -31,6 +31,8 @@ public class Player : Area2D
     private Position2D Muzzle;
     private Timer _gunTimer;
     private Light2D _thrustLight;
+    private Area2D _shield;
+    private AnimationPlayer _shieldPlayer;
 
     private ScreenWrap _screenWrap;
 
@@ -44,12 +46,16 @@ public class Player : Area2D
         _shootSound = GetNode<AudioStreamPlayer>("ShootSound");
         _thrustAudio = GetNode<AudioStreamPlayer>("ThrustSound");
         _thrustLight = GetNode<Light2D>("ThrustLight");
+        _shield = GetNode<Area2D>("Shield");
+        _shieldPlayer = GetNode<AnimationPlayer>("Shield/ShieldPlayer");
 
         _screenSize = GetViewportRect().Size;
         _screenWrap = new ScreenWrap(_screenSize, 8);
         GlobalPosition = _screenSize / 2;
 
         _thrustLight.Enabled = false;
+
+        _shield.Connect("body_entered", this, nameof(OnShieldCollision));
     }
 
     public override void _Process(float delta)
@@ -79,17 +85,21 @@ public class Player : Area2D
 
     private void StateNormal(float delta)
     {
+        var moveDirection = new Vector2(0, -1).Rotated(Rotation);
+        
         if (Input.IsActionPressed("shoot"))
             if (_gunTimer.TimeLeft == 0)
                 Shoot();
-        
+
         if (Input.IsActionPressed("left"))
+        {
             RotationDegrees -= (float)RotationSpeed * delta;
+        }
 
         if (Input.IsActionPressed("right"))
+        {
             RotationDegrees += (float) RotationSpeed * delta;
-
-        var moveDirection = new Vector2(0, -1).Rotated(Rotation);
+        }
 
         if (Input.IsActionPressed("thrust"))
         {
@@ -128,5 +138,16 @@ public class Player : Area2D
         _bulletContainer.AddChild(bullet);
         bullet.StartAt(Rotation, Muzzle.GlobalPosition);
         _shipSprite.Play("Shoot");
+    }
+
+    private void OnShieldCollision(Node node)
+    {
+        if (node.IsInGroup("Rocks") && node.Name.IndexOf("@", StringComparison.Ordinal) > -1)
+            _shieldPlayer.Play("On");
+    }
+
+    private void ShieldCollisionOver()
+    {
+        _shieldPlayer.Play("Idle");
     }
 }

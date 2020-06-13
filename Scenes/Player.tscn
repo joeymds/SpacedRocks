@@ -1,23 +1,24 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://GFX/Player/space-ship-01.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player.cs" type="Script" id=2]
 [ext_resource path="res://Scenes/PlayerBullet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://SFX/Shoot/shoot-01.ogg" type="AudioStream" id=4]
+[ext_resource path="res://GFX/Shield/shield.png" type="Texture" id=5]
 [ext_resource path="res://GFX/Bullets/lantern.png" type="Texture" id=6]
 [ext_resource path="res://SFX/Thrust/Rocket-thrust.ogg" type="AudioStream" id=7]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 0, 64, 64 )
+region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 64, 64 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
-region = Rect2( 192, 0, 64, 64 )
+region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
@@ -25,15 +26,15 @@ region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
-"loop": true,
-"name": "Thrust",
-"speed": 15.0
-}, {
-"frames": [ SubResource( 3 ) ],
+"frames": [ SubResource( 1 ) ],
 "loop": true,
 "name": "Shoot",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "Thrust",
+"speed": 15.0
 }, {
 "frames": [ SubResource( 4 ) ],
 "loop": true,
@@ -44,8 +45,59 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=6]
 radius = 16.2435
 
+[sub_resource type="CircleShape2D" id=7]
+radius = 24.4559
+
+[sub_resource type="Animation" id=8]
+resource_name = "Idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("ShieldSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "On"
+length = 0.4
+step = 0.075
+tracks/0/type = "value"
+tracks/0/path = NodePath("ShieldSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.075, 0.15, 0.225, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.375 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "ShieldCollisionOver"
+} ]
+}
+
 [node name="Player" type="Area2D"]
-position = Vector2( 321.717, 175.632 )
+position = Vector2( 321.627, 175.632 )
+collision_mask = 4
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -82,3 +134,21 @@ texture = ExtResource( 6 )
 texture_scale = 0.5
 color = Color( 0.956863, 0.854902, 0.184314, 1 )
 energy = 0.75
+
+[node name="Shield" type="Area2D" parent="."]
+collision_layer = 12
+collision_mask = 4
+
+[node name="ShieldSprite" type="Sprite" parent="Shield"]
+texture = ExtResource( 5 )
+hframes = 6
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shield"]
+position = Vector2( 0, 2 )
+shape = SubResource( 7 )
+
+[node name="ShieldPlayer" type="AnimationPlayer" parent="Shield"]
+autoplay = "Idle"
+anims/Idle = SubResource( 8 )
+anims/On = SubResource( 9 )
