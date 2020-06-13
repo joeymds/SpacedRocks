@@ -2,7 +2,7 @@ using Godot;
 using System;
 using SpacedRocks.Common;
 
-public class Player : Area2D
+public class Player : KinematicBody2D
 {
 
     [Export()] public double RotationSpeed = 180;
@@ -10,6 +10,9 @@ public class Player : Area2D
     [Export()] public double Acceleration = 0.1;
     [Export()] public double Friction = 0.01;
     [Export()] public PackedScene _bullet;
+    [Export()] public int Shield = 100;
+    [Export()] public int ShieldRechargeValue = 3;
+    [Export()] public int ShieldRechargeInterval = 3;
 
     private enum PlayerStates
     {
@@ -22,19 +25,25 @@ public class Player : Area2D
 
     private Vector2 _screenSize = Vector2.Zero;
     private Vector2 _velocity = Vector2.Zero;
+    private bool _vulnerable = true; 
 
     private Global _global;
     private AnimatedSprite _shipSprite;
-    private AudioStreamPlayer _shootSound;
-    private AudioStreamPlayer _thrustAudio;
     private Node _bulletContainer;
     private Position2D Muzzle;
     private Timer _gunTimer;
     private Light2D _thrustLight;
     private Area2D _shield;
     private AnimationPlayer _shieldPlayer;
+    private Timer _shieldRechargeTimer;
 
     private ScreenWrap _screenWrap;
+    private EntityScores _entityScores;
+    
+    private AudioStreamPlayer _shootSound;
+    private AudioStreamPlayer _thrustAudio;
+    private AudioStreamPlayer _rechargeBeep;
+    private AudioStreamPlayer2D _shieldSound;
 
     public override void _Ready()
     {
@@ -43,19 +52,26 @@ public class Player : Area2D
         _bulletContainer = GetNode<Node>("BulletContainer");
         Muzzle = GetNode<Position2D>("Muzzle");
         _gunTimer = GetNode<Timer>("GunTimer");
-        _shootSound = GetNode<AudioStreamPlayer>("ShootSound");
-        _thrustAudio = GetNode<AudioStreamPlayer>("ThrustSound");
+        
+        _shootSound = GetNode<AudioStreamPlayer>("Audio/ShootSound");
+        _thrustAudio = GetNode<AudioStreamPlayer>("Audio/ThrustSound");
+        _rechargeBeep = GetNode<AudioStreamPlayer>("Audio/RechargeBeep");
+        
         _thrustLight = GetNode<Light2D>("ThrustLight");
         _shield = GetNode<Area2D>("Shield");
         _shieldPlayer = GetNode<AnimationPlayer>("Shield/ShieldPlayer");
+        _shieldRechargeTimer = GetNode<Timer>("ShieldRechargeTimer");
+        _shieldSound = GetNode<AudioStreamPlayer2D>("Shield/AudioStreamPlayer2D");
 
         _screenSize = GetViewportRect().Size;
         _screenWrap = new ScreenWrap(_screenSize, 8);
         GlobalPosition = _screenSize / 2;
 
+        _shieldRechargeTimer.WaitTime = ShieldRechargeInterval;
+        
+        _entityScores = new EntityScores();
         _thrustLight.Enabled = false;
-
-        _shield.Connect("body_entered", this, nameof(OnShieldCollision));
+        _global.Shield = Shield;
     }
 
     public override void _Process(float delta)
@@ -127,7 +143,7 @@ public class Player : Area2D
 
     private void StateDead(float delta)
     {
-        
+        QueueFree();
     }
     
     private void Shoot()
@@ -140,14 +156,45 @@ public class Player : Area2D
         _shipSprite.Play("Shoot");
     }
 
-    private void OnShieldCollision(Node node)
+    private void OnShieldAreaEntered(HitBox hitBox)
     {
-        if (node.IsInGroup("Rocks") && node.Name.IndexOf("@", StringComparison.Ordinal) > -1)
-            _shieldPlayer.Play("On");
+        if (_vulnerable == false)
+            return;
+            
+        _shieldSound.Play();
+        _vulnerable = false;
+        _shieldPlayer.Play("On");
+        DamageShield(_entityScores.getRockDamage(hitBox.RockSize));
+        
     }
 
+    private void DamageShield(int damageAmount)
+    {
+        Shield -= damageAmount;
+        if (Shield <= 0)
+        {
+            Shield = 0;
+            _playerState = PlayerStates.dead;
+        }
+        _global.Shield = Shield;
+    }
+    
     private void ShieldCollisionOver()
     {
         _shieldPlayer.Play("Idle");
+        _vulnerable = true;
+    }
+
+    private void OnShieldRechargeTimerTimeout()
+    {
+        if (Shield < 100)
+        {
+            if (Shield >= 100)
+                Shield = 100;
+            
+            Shield += ShieldRechargeValue;
+            _rechargeBeep.Play();
+        }
+        _global.Shield = Shield;
     }
 }

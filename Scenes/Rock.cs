@@ -13,6 +13,8 @@ public class Rock : KinematicBody2D
     private Texture _texture;
     private CollisionShape2D _collision;
     private Particles2D _puff;
+    private HitBox _hitBox;
+    private CollisionShape2D _collisionHitBox;
     
     public enum RockSizes
     {
@@ -23,13 +25,17 @@ public class Rock : KinematicBody2D
         Dead
     };
     
+    public enum RockDamage
+    {
+        Tiny = 5, Small = 8, Medium = 13, Large = 24
+    }
+    
     public readonly Dictionary<RockSizes, string> _rocks = new Dictionary<RockSizes, string>();
 
     [Signal]
     public delegate void Death();
     
     public Vector2 _velocity = Vector2.Zero;
-    
 
     [Export()] public RockSizes _rockSize = RockSizes.Large;
     [Export()] public Vector2 _startPosition = Vector2.Zero;
@@ -39,11 +45,13 @@ public class Rock : KinematicBody2D
     public override void _Ready()
     {
         _puff = GetNode<Particles2D>("Puff");
-
+        _hitBox = GetNode<HitBox>("HitBox");
+        
         AddToGroup("Rocks");
         PopulateDictionary();
         _screenSize = GetViewportRect().Size;
         _screenWrap = new ScreenWrap(_screenSize, 8);
+        _hitBox.RockSize = _rockSize;
         InitRock(_initVelocity);
     }    
 
@@ -72,8 +80,13 @@ public class Rock : KinematicBody2D
 
     private void AttachCollisionShape()
     {
+        var rockWidth = _texture.GetWidth() / 2;
+        var rockHeight = _texture.GetHeight() / 2;
+        
         _collision = GetNode<CollisionShape2D>("CollisionShape");
-        _collision.Shape = new CircleShape2D {Radius = Math.Min(_texture.GetWidth() / 2, _texture.GetHeight() / 2)};
+        _collisionHitBox = GetNode<CollisionShape2D>("HitBox/CollisionHitBox");
+        _collision.Shape = new CircleShape2D {Radius = Math.Min(rockWidth, rockHeight)};
+        _collisionHitBox.Shape = new CircleShape2D {Radius = Math.Min(rockWidth - 1, rockHeight - 1)};
     }
     
     private void PopulateDictionary()
@@ -108,7 +121,6 @@ public class Rock : KinematicBody2D
         return rockImageSprite;
     }
     
-    
     public override void _PhysicsProcess(float delta)
     {
         _velocity = _velocity.Clamped(500);
@@ -116,10 +128,15 @@ public class Rock : KinematicBody2D
         var collision = MoveAndCollide(_velocity * delta, false, true, false);
         if (collision != null)
         {
-            GD.Print("Collided");
-            _velocity = _velocity.Bounce(collision.Normal) * (float)_bounce;
-            _puff.GlobalPosition = collision.Position;
-            _puff.Emitting = true;
+            var col = (Node2D) collision.Collider;
+            if (col.Name == "player")
+                Explode(_rockSize, _velocity, collision.ColliderVelocity);
+            else
+            {
+                _velocity = _velocity.Bounce(collision.Normal) * (float)_bounce;
+                _puff.GlobalPosition = collision.Position;
+                _puff.Emitting = true;
+            }
         }
         Position = _screenWrap.WrappedPosition(Position, _spriteSize);
     }
@@ -148,7 +165,7 @@ public class Rock : KinematicBody2D
         GetTree().Root.AddChild(explosion);
         explosion.GlobalPosition = Position;
     }
-
+    
     private static float RandomRadian()
     {
         var random = new Random();

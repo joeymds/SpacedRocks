@@ -20,5 +20,24 @@ namespace SpacedRocks.Common
                     return 0;
             }
         }
+
+        public int getRockDamage(Rock.RockSizes rockSize)
+        {
+            switch (rockSize)
+            {
+                case Rock.RockSizes.Large:
+                    return 23;
+                case Rock.RockSizes.Medium:
+                    return 14;
+                case Rock.RockSizes.Small:
+                    return 8;
+                case Rock.RockSizes.Tiny:
+                    return 3;
+                default:
+                    return 0;
+            }
+        }
+        
+        
     }
 }

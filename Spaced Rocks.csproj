@@ -61,6 +61,7 @@
     <Compile Include="Scenes\CountDown.cs" />
     <Compile Include="Scenes\Explosion.cs" />
     <Compile Include="Scenes\Game.cs" />
+    <Compile Include="Scenes\HitBox.cs" />
     <Compile Include="Scenes\Main.cs" />
     <Compile Include="Scenes\Pause.cs" />
     <Compile Include="Scenes\Player.cs" />

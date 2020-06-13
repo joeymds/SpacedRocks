@@ -19,7 +19,7 @@ public class UI : MarginContainer
     public override void _Process(float delta)
     {
         _scoreText.Text = _global.PlayerScore.ToString();
-        _shieldText.Text = _global.ShieldStrength.ToString();
+        _shieldText.Text = $"{_global.Shield.ToString()}%" ;
         _level.Text = _global.Level.LevelNumber.ToString();
     }
 }

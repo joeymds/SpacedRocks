@@ -67,7 +67,8 @@ pause={
 2d_physics/layer_1="Space"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Rocks"
-2d_physics/layer_4="Shield"
+2d_physics/layer_4="PlayerShield"
+2d_physics/layer_5="RockHitBox"
 
 [rendering]
 
