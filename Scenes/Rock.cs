@@ -40,7 +40,7 @@ public class Rock : KinematicBody2D
     [Export()] public RockSizes _rockSize = RockSizes.Large;
     [Export()] public Vector2 _startPosition = Vector2.Zero;
     [Export()] private Vector2 _initVelocity = Vector2.Zero;
-    [Export()] private double _bounce = 0.8;
+    [Export()] private double _bounce = 1;
 
     public override void _Ready()
     {

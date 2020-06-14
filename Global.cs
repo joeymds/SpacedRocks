@@ -17,10 +17,13 @@ public class Global : Node2D
     public int PlayerScore { get; set; }
     public int RockCount { get; set; }
 
+    public bool GameOver { get; set; }
+
     public LevelStates LevelState { get; set; }
 
     public Global()
     {
+        GameOver = false;
         createLevels();
         LevelState = LevelStates.Active;
     }
@@ -34,9 +37,9 @@ public class Global : Node2D
         _currentLevel = _levels[0];
     }
 
-    public void UpdateScore(int updateValue)
+    public void RockHit(int scoreValue)
     {
-        PlayerScore += updateValue;
+        PlayerScore += scoreValue;
     }
 
     public void UpdateRockCount(int rockCount)
@@ -55,9 +58,7 @@ public class Global : Node2D
         _currentLevel = _levels[_level - 1];
         LevelState = LevelStates.Active;
     }
-    
-    
-    
+
     private void createLevels()
     {
         _levels.Add(new Level()

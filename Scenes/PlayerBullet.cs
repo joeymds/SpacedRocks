@@ -24,7 +24,8 @@ public class PlayerBullet : Area2D
         rock.Explode(rock._rockSize, rock._velocity, _velocity.Normalized());
         var entityScores = new EntityScores();
         var rockScore = entityScores.getRockScore(rock._rockSize);
-        GetTree().CallGroup("Global", "UpdateScore", rockScore);
+        GetTree().CallGroup("Global", "RockHit", rockScore);
+        GetTree().CallGroup("Camera", "RockHit");
         QueueFree();
     }
 

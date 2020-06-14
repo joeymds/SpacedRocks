@@ -24,13 +24,13 @@ namespace SpacedRocks.Common
         {
             var pos = position;
             if (pos.x > _screenSize.x + spriteSize.x)
-                pos.x = -spriteSize.x;
+                pos.x = -spriteSize.x + 10;
             if (pos.x < -spriteSize.x)
-                pos.x = _screenSize.x + spriteSize.x;
-            if (pos.y > _screenSize.y + spriteSize.y)
+                pos.x = _screenSize.x + spriteSize.x - 10;
+            if (pos.y > _screenSize.y + spriteSize.y - 10)
                 pos.y = -spriteSize.y;
             if (pos.y < -spriteSize.y)
-                pos.y = _screenSize.y + spriteSize.y;
+                pos.y = _screenSize.y + spriteSize.y - 10;
             return pos;
         }
     }

@@ -174,6 +174,7 @@ public class Player : KinematicBody2D
         if (Shield <= 0)
         {
             Shield = 0;
+            _global.GameOver = true;
             _playerState = PlayerStates.dead;
         }
         _global.Shield = Shield;

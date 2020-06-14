@@ -11,6 +11,7 @@ public class Main : Node
     private int _levelRockCount;
     private CountDown _countDown;
     private AudioStreamPlayer _gameTrack;
+    private Camera2D _camera;
     private Dictionary<Rock.RockSizes, Rock.RockSizes> _breakPattern = new Dictionary<Rock.RockSizes, Rock.RockSizes>();
     
     public override void _Ready()
@@ -23,6 +24,7 @@ public class Main : Node
         _rockContainer = GetNode<Node>("RockContainer");
         _countDown = GetNode<CountDown>("CountDown");
         _gameTrack = GetNode<AudioStreamPlayer>("GameTrack");
+        _camera = GetNode<Camera2D>("Camera2D");
         
         spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
         _totalNumberOfRocks = _global.Level.NumberOfRocks;
