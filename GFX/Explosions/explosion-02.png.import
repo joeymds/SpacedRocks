@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/shield-01.png-7c007313829b78e1a9fc0a2dded525eb.stex"
+path="res://.import/explosion-02.png-caa8431ee9b30b30346462811e6c9602.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://GFX/Player/shield-01.png"
-dest_files=[ "res://.import/shield-01.png-7c007313829b78e1a9fc0a2dded525eb.stex" ]
+source_file="res://GFX/Explosions/explosion-02.png"
+dest_files=[ "res://.import/explosion-02.png-caa8431ee9b30b30346462811e6c9602.stex" ]
 
 [params]
 

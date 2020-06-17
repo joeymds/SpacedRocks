@@ -31,10 +31,12 @@ public class Player : KinematicBody2D
     private AnimatedSprite _shipSprite;
     private Node _bulletContainer;
     private Position2D Muzzle;
-    private Timer _gunTimer;
+    
     private Light2D _thrustLight;
     private Area2D _shield;
     private AnimationPlayer _shieldPlayer;
+    
+    private Timer _gunTimer;
     private Timer _shieldRechargeTimer;
 
     private ScreenWrap _screenWrap;
@@ -51,8 +53,6 @@ public class Player : KinematicBody2D
         _shipSprite = GetNode<AnimatedSprite>("Ship");
         _bulletContainer = GetNode<Node>("BulletContainer");
         Muzzle = GetNode<Position2D>("Muzzle");
-        _gunTimer = GetNode<Timer>("GunTimer");
-        
         _shootSound = GetNode<AudioStreamPlayer>("Audio/ShootSound");
         _thrustAudio = GetNode<AudioStreamPlayer>("Audio/ThrustSound");
         _rechargeBeep = GetNode<AudioStreamPlayer>("Audio/RechargeBeep");
@@ -60,7 +60,10 @@ public class Player : KinematicBody2D
         _thrustLight = GetNode<Light2D>("ThrustLight");
         _shield = GetNode<Area2D>("Shield");
         _shieldPlayer = GetNode<AnimationPlayer>("Shield/ShieldPlayer");
+        
+        _gunTimer = GetNode<Timer>("GunTimer");
         _shieldRechargeTimer = GetNode<Timer>("ShieldRechargeTimer");
+
         _shieldSound = GetNode<AudioStreamPlayer2D>("Shield/AudioStreamPlayer2D");
 
         _screenSize = GetViewportRect().Size;
@@ -68,10 +71,11 @@ public class Player : KinematicBody2D
         GlobalPosition = _screenSize / 2;
 
         _shieldRechargeTimer.WaitTime = ShieldRechargeInterval;
-        
+
         _entityScores = new EntityScores();
         _thrustLight.Enabled = false;
         _global.Shield = Shield;
+
     }
 
     public override void _Process(float delta)
@@ -88,7 +92,7 @@ public class Player : KinematicBody2D
                 StateNormal(delta);
                 break;
             case PlayerStates.dead:
-                StateDead(delta);
+                StateDead();
                 break;
             case PlayerStates.disabled:
                 StateDisabled(delta);
@@ -141,9 +145,17 @@ public class Player : KinematicBody2D
         
     }
 
-    private void StateDead(float delta)
+    private void StateDead()
+    {
+        _vulnerable = false;
+        _shipSprite.Play("Explode");
+    }
+
+
+    private void PlayerIsNowDead()
     {
         QueueFree();
+        GetTree().ChangeScene("res://Scenes/Game.tscn");
     }
     
     private void Shoot()
@@ -176,6 +188,7 @@ public class Player : KinematicBody2D
             Shield = 0;
             _global.GameOver = true;
             _playerState = PlayerStates.dead;
+            _shieldRechargeTimer.Stop();
         }
         _global.Shield = Shield;
     }

@@ -26,11 +26,11 @@ namespace SpacedRocks.Common
             switch (rockSize)
             {
                 case Rock.RockSizes.Large:
-                    return 23;
+                    return 25;
                 case Rock.RockSizes.Medium:
                     return 14;
                 case Rock.RockSizes.Small:
-                    return 8;
+                    return 7;
                 case Rock.RockSizes.Tiny:
                     return 3;
                 default:

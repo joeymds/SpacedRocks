@@ -29,8 +29,7 @@ public class Main : Node
         spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
         _totalNumberOfRocks = _global.Level.NumberOfRocks;
         _levelRockCount = _global.Level.NumberOfRocks;
-        _countDown.Visible = false;
-        
+
         for (var i = 0; i < _totalNumberOfRocks; i++)
             SpawnRock(Rock.RockSizes.Large, _rockSpawnLocations.GetChild<Position2D>(i).Position, Vector2.Zero);
         
@@ -73,12 +72,9 @@ public class Main : Node
     public void UpdateRockLevel(int rocks)
     {
         _levelRockCount += rocks;
-        if (_levelRockCount <= 0)
-        {
-            GetTree().CallGroup("Global", "FinishedLevel");
-            _countDown.Visible = true;
-            _countDown.StartCountDown();
-        }
+        if (_levelRockCount > 0) return;
+        
+        _countDown.StartCountDown();
     }
 
     private void CountDownComplete()

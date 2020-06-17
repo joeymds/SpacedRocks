@@ -13,7 +13,7 @@ public class Global : Node2D
     private List<Level> _levels = new List<Level>();
     private Level _currentLevel;
 
-    public int Shield { get; set; }
+    public int Shield { get; set; }     
     public int PlayerScore { get; set; }
     public int RockCount { get; set; }
 
@@ -33,8 +33,7 @@ public class Global : Node2D
     public override void _Ready()
     {
         AddToGroup("Global");
-        PlayerScore = 0;
-        _currentLevel = _levels[0];
+        ResetGame();
     }
 
     public void RockHit(int scoreValue)
@@ -45,6 +44,13 @@ public class Global : Node2D
     public void UpdateRockCount(int rockCount)
     {
         RockCount = rockCount;
+    }
+
+    public void ResetGame()
+    {
+        PlayerScore = 0;
+        _currentLevel = _levels[0];
+        GameOver = false;
     }
 
     private void FinishedLevel()
@@ -96,6 +102,42 @@ public class Global : Node2D
             LevelNumber = 6, 
             LevelName = "Level06",
             NumberOfRocks = 6
+        });
+        _levels.Add(new Level()
+        {
+            LevelNumber = 7, 
+            LevelName = "Level07",
+            NumberOfRocks = 7
+        });
+        _levels.Add(new Level()
+        {
+            LevelNumber = 8, 
+            LevelName = "Level08",
+            NumberOfRocks = 8
+        });
+        _levels.Add(new Level()
+        {
+            LevelNumber = 9, 
+            LevelName = "Level09",
+            NumberOfRocks = 9
+        });
+        _levels.Add(new Level()
+        {
+            LevelNumber = 10, 
+            LevelName = "Level10",
+            NumberOfRocks = 10
+        });
+        _levels.Add(new Level()
+        {
+            LevelNumber = 11, 
+            LevelName = "Level11",
+            NumberOfRocks = 11
+        });
+        _levels.Add(new Level()
+        {
+            LevelNumber = 12, 
+            LevelName = "Level12",
+            NumberOfRocks = 12
         });
     }
 
