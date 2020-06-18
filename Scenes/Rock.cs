@@ -58,7 +58,7 @@ public class Rock : KinematicBody2D
     public void InitRock(Vector2 velocity)
     {
         var rand = new Random();
-        _velocity = velocity.Length() > 0 ? velocity : new Vector2(rand.Next(30, 100), 0).Rotated(RandomRadian());
+        _velocity = velocity.Length() > 0 ? velocity : new Vector2(rand.Next(30, 100), 0).Rotated(SpawnPosition.RandomRadian());
         _rotationSpeed = rand.Next(-3, 3);
         
         LoadTexture();
@@ -165,11 +165,5 @@ public class Rock : KinematicBody2D
         GetTree().Root.AddChild(explosion);
         explosion.GlobalPosition = Position;
     }
-    
-    private static float RandomRadian()
-    {
-        var random = new Random();
-        return (float)(Math.PI / 180) * random.Next(1, 359);
-    }
-    
+
 }

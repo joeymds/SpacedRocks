@@ -68,6 +68,7 @@
     <Compile Include="Scenes\Pause.cs" />
     <Compile Include="Scenes\Player.cs" />
     <Compile Include="Scenes\PlayerBullet.cs" />
+    <Compile Include="Scenes\PowerUp\PowerUp.cs" />
     <Compile Include="Scenes\Rock.cs" />
     <Compile Include="Scenes\RockExplosion.cs" />
     <Compile Include="Scenes\UI.cs" />

@@ -69,6 +69,7 @@ pause={
 2d_physics/layer_3="Rocks"
 2d_physics/layer_4="PlayerShield"
 2d_physics/layer_5="RockHitBox"
+2d_physics/layer_6="PowerUps"
 
 [rendering]
 

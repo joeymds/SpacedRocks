@@ -9,10 +9,11 @@ public class Player : KinematicBody2D
     [Export()] public int Thrust = 150;
     [Export()] public double Acceleration = 0.1;
     [Export()] public double Friction = 0.01;
-    [Export()] public PackedScene _bullet;
+    [Export()] public PackedScene bullet;
     [Export()] public int Shield = 100;
     [Export()] public int ShieldRechargeValue = 3;
     [Export()] public int ShieldRechargeInterval = 3;
+    [Export()] public double ShootWaitTime = 0.4;
 
     private enum PlayerStates
     {
@@ -21,72 +22,77 @@ public class Player : KinematicBody2D
         dead
     }
 
-    private PlayerStates _playerState = PlayerStates.normal;
+    private PlayerStates playerState = PlayerStates.normal;
 
-    private Vector2 _screenSize = Vector2.Zero;
-    private Vector2 _velocity = Vector2.Zero;
-    private bool _vulnerable = true; 
+    private Vector2 screenSize = Vector2.Zero;
+    private Vector2 velocity = Vector2.Zero;
+    
+    private bool vulnerable = true;
+    private bool powerUpInEffect = false;
 
-    private Global _global;
-    private AnimatedSprite _shipSprite;
-    private Node _bulletContainer;
-    private Position2D Muzzle;
+    private Global global;
+    private AnimatedSprite shipSprite;
+    private Node bulletContainer;
+    private Position2D muzzle;
     
-    private Light2D _thrustLight;
-    private Area2D _shield;
-    private AnimationPlayer _shieldPlayer;
+    private Light2D thrustLight;
+    private Area2D shield;
+    private AnimationPlayer shieldPlayer;
     
-    private Timer _gunTimer;
-    private Timer _shieldRechargeTimer;
+    private Timer gunTimer;
+    private Timer shieldRechargeTimer;
+    private Timer powerUpTimer;
 
-    private ScreenWrap _screenWrap;
-    private EntityScores _entityScores;
+    private ScreenWrap screenWrap;
+    private EntityScores entityScores;
     
-    private AudioStreamPlayer _shootSound;
-    private AudioStreamPlayer _thrustAudio;
-    private AudioStreamPlayer _rechargeBeep;
-    private AudioStreamPlayer2D _shieldSound;
+    private AudioStreamPlayer shootSound;
+    private AudioStreamPlayer thrustAudio;
+    private AudioStreamPlayer rechargeBeep;
+    private AudioStreamPlayer2D shieldSound;
 
     public override void _Ready()
     {
-        _global = GetTree().Root.GetNode<Global>("Global");
-        _shipSprite = GetNode<AnimatedSprite>("Ship");
-        _bulletContainer = GetNode<Node>("BulletContainer");
-        Muzzle = GetNode<Position2D>("Muzzle");
-        _shootSound = GetNode<AudioStreamPlayer>("Audio/ShootSound");
-        _thrustAudio = GetNode<AudioStreamPlayer>("Audio/ThrustSound");
-        _rechargeBeep = GetNode<AudioStreamPlayer>("Audio/RechargeBeep");
+        global = GetTree().Root.GetNode<Global>("Global");
+        shipSprite = GetNode<AnimatedSprite>("Ship");
+        bulletContainer = GetNode<Node>("BulletContainer");
+        muzzle = GetNode<Position2D>("Muzzle");
+        shootSound = GetNode<AudioStreamPlayer>("Audio/ShootSound");
+        thrustAudio = GetNode<AudioStreamPlayer>("Audio/ThrustSound");
+        rechargeBeep = GetNode<AudioStreamPlayer>("Audio/RechargeBeep");
         
-        _thrustLight = GetNode<Light2D>("ThrustLight");
-        _shield = GetNode<Area2D>("Shield");
-        _shieldPlayer = GetNode<AnimationPlayer>("Shield/ShieldPlayer");
+        bullet = (PackedScene) ResourceLoader.Load("res://Scenes/PlayerBullet.tscn");
         
-        _gunTimer = GetNode<Timer>("GunTimer");
-        _shieldRechargeTimer = GetNode<Timer>("ShieldRechargeTimer");
+        thrustLight = GetNode<Light2D>("ThrustLight");
+        shield = GetNode<Area2D>("Shield");
+        shieldPlayer = GetNode<AnimationPlayer>("Shield/ShieldPlayer");
+        
+        gunTimer = GetNode<Timer>("GunTimer");
+        shieldRechargeTimer = GetNode<Timer>("ShieldRechargeTimer");
 
-        _shieldSound = GetNode<AudioStreamPlayer2D>("Shield/AudioStreamPlayer2D");
+        shieldSound = GetNode<AudioStreamPlayer2D>("Shield/AudioStreamPlayer2D");
 
-        _screenSize = GetViewportRect().Size;
-        _screenWrap = new ScreenWrap(_screenSize, 8);
-        GlobalPosition = _screenSize / 2;
+        screenSize = GetViewportRect().Size;
+        screenWrap = new ScreenWrap(screenSize, 8);
+        GlobalPosition = screenSize / 2;
 
-        _shieldRechargeTimer.WaitTime = ShieldRechargeInterval;
+        shieldRechargeTimer.WaitTime = ShieldRechargeInterval;
 
-        _entityScores = new EntityScores();
-        _thrustLight.Enabled = false;
-        _global.Shield = Shield;
+        entityScores = new EntityScores();
+        thrustLight.Enabled = false;
+        global.Shield = Shield;
 
     }
 
     public override void _Process(float delta)
     {
-        if (_global.LevelState == Global.LevelStates.Complete)
+        if (global.LevelState == Global.LevelStates.Complete)
         {
             StateDisabled(delta);
             return;
         }
             
-        switch (_playerState)
+        switch (playerState)
         {
             case PlayerStates.normal:
                 StateNormal(delta);
@@ -108,7 +114,7 @@ public class Player : KinematicBody2D
         var moveDirection = new Vector2(0, -1).Rotated(Rotation);
         
         if (Input.IsActionPressed("shoot"))
-            if (_gunTimer.TimeLeft == 0)
+            if (gunTimer.TimeLeft == 0)
                 Shoot();
 
         if (Input.IsActionPressed("left"))
@@ -123,21 +129,21 @@ public class Player : KinematicBody2D
 
         if (Input.IsActionPressed("thrust"))
         {
-            _velocity = _velocity.LinearInterpolate(moveDirection, (float) Acceleration);
-            _shipSprite.Play("Thrust");
-            _thrustAudio.Play();
-            _thrustLight.Enabled = true;
+            velocity = velocity.LinearInterpolate(moveDirection, (float) Acceleration);
+            shipSprite.Play("Thrust");
+            thrustAudio.Play();
+            thrustLight.Enabled = true;
         }
         else
         {
-            _velocity = _velocity.LinearInterpolate(Vector2.Zero, (float) Friction);
-            _shipSprite.Play("Idle");
-            _thrustAudio.Stop();
-            _thrustLight.Enabled = false;
+            velocity = velocity.LinearInterpolate(Vector2.Zero, (float) Friction);
+            shipSprite.Play("Idle");
+            thrustAudio.Stop();
+            thrustLight.Enabled = false;
         }
         
-        Position += _velocity * Thrust * delta;
-        Position = _screenWrap.WrappedPosition(Position);
+        Position += velocity * Thrust * delta;
+        Position = screenWrap.WrappedPosition(Position);
     }
 
     private void StateDisabled(float delta)
@@ -147,8 +153,8 @@ public class Player : KinematicBody2D
 
     private void StateDead()
     {
-        _vulnerable = false;
-        _shipSprite.Play("Explode");
+        vulnerable = false;
+        shipSprite.Play("Explode");
     }
 
 
@@ -160,23 +166,23 @@ public class Player : KinematicBody2D
     
     private void Shoot()
     {
-        _gunTimer.Start();
-        _shootSound.Play();
-        var bullet = (PlayerBullet)_bullet.Instance();
-        _bulletContainer.AddChild(bullet);
-        bullet.StartAt(Rotation, Muzzle.GlobalPosition);
-        _shipSprite.Play("Shoot");
+        gunTimer.Start();
+        shootSound.Play();
+        var newBullet = (PlayerBullet)bullet.Instance();
+        bulletContainer.AddChild(newBullet);
+        newBullet.StartAt(Rotation, muzzle.GlobalPosition);
+        shipSprite.Play("Shoot");
     }
 
     private void OnShieldAreaEntered(HitBox hitBox)
     {
-        if (_vulnerable == false)
+        if (vulnerable == false)
             return;
             
-        _shieldSound.Play();
-        _vulnerable = false;
-        _shieldPlayer.Play("On");
-        DamageShield(_entityScores.getRockDamage(hitBox.RockSize));
+        shieldSound.Play();
+        vulnerable = false;
+        shieldPlayer.Play("On");
+        DamageShield(entityScores.getRockDamage(hitBox.RockSize));
         
     }
 
@@ -186,17 +192,17 @@ public class Player : KinematicBody2D
         if (Shield <= 0)
         {
             Shield = 0;
-            _global.GameOver = true;
-            _playerState = PlayerStates.dead;
-            _shieldRechargeTimer.Stop();
+            global.GameOver = true;
+            playerState = PlayerStates.dead;
+            shieldRechargeTimer.Stop();
         }
-        _global.Shield = Shield;
+        global.Shield = Shield;
     }
     
     private void ShieldCollisionOver()
     {
-        _shieldPlayer.Play("Idle");
-        _vulnerable = true;
+        shieldPlayer.Play("Idle");
+        vulnerable = true;
     }
 
     private void OnShieldRechargeTimerTimeout()
@@ -207,8 +213,28 @@ public class Player : KinematicBody2D
                 Shield = 100;
             
             Shield += ShieldRechargeValue;
-            _rechargeBeep.Play();
+            rechargeBeep.Play();
         }
-        _global.Shield = Shield;
+        global.Shield = Shield;
+    }
+
+    public void PowerUp()
+    {
+        if (powerUpInEffect)
+            return;
+
+        powerUpInEffect = true;
+        gunTimer.WaitTime = 0.15f;
+        powerUpTimer = new Timer {WaitTime = 10, OneShot = true};
+        powerUpTimer.Connect("timeout", this, nameof(PowerUpCompleted));
+        AddChild(powerUpTimer);
+        powerUpTimer.Start();
+    }
+
+    private void PowerUpCompleted()
+    {
+        powerUpInEffect = false;
+        RemoveChild(powerUpTimer);
+        gunTimer.WaitTime = 0.4f;
     }
 }

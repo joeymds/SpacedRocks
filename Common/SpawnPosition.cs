@@ -27,5 +27,11 @@ namespace SpacedRocks.Common
             availableItems.RemoveAt(nextIndex);
             return nextIndex;
         }
+        
+        public static float RandomRadian()
+        {
+            var random = new Random();
+            return (float)(Math.PI / 180) * random.Next(1, 359);
+        }
     }
 }
