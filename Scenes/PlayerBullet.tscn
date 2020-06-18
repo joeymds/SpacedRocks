@@ -22,9 +22,9 @@ shape = SubResource( 1 )
 wait_time = 0.4
 autostart = true
 
-[node name="Light2D" type="Light2D" parent="."]
+[node name="BulletLight" type="Light2D" parent="."]
 texture = ExtResource( 3 )
 texture_scale = 0.5
-color = Color( 0.513726, 0.937255, 0.992157, 1 )
+color = Color( 0.937255, 0.435294, 0.368627, 1 )
 [connection signal="body_entered" from="." to="." method="OnPlayerBulletBodyEntered"]
 [connection signal="timeout" from="Lifetime" to="." method="OnLifetimeTimeout"]

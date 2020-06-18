@@ -56,6 +56,7 @@
     <Compile Include="Common\EntityScores.cs" />
     <Compile Include="Common\Level.cs" />
     <Compile Include="Common\ScreenWrap.cs" />
+    <Compile Include="Common\SpawnPosition.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\Camera2D.cs" />

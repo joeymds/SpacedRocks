@@ -1,54 +1,62 @@
 using Godot;
 using System.Collections.Generic;
+using SpacedRocks.Common;
 
 public class Main : Node
 {
-    private Global _global;
+    private Global global;
     private PackedScene spaceRockScene;
-    private Node _rockSpawnLocations;
-    private Node _rockContainer;
-    private int _totalNumberOfRocks;
-    private int _levelRockCount;
-    private CountDown _countDown;
-    private AudioStreamPlayer _gameTrack;
-    private Camera2D _camera;
-    private Dictionary<Rock.RockSizes, Rock.RockSizes> _breakPattern = new Dictionary<Rock.RockSizes, Rock.RockSizes>();
+    private Node rockSpawnLocations;
+    private Node rockContainer;
+    
+    private int totalNumberOfRocks;
+    private int levelRockCount;
+
+    private SpawnPosition spawnPosition;
+    private CountDown countDown;
+    private AudioStreamPlayer gameTrack;
+    private Camera2D camera;
+    private Dictionary<Rock.RockSizes, Rock.RockSizes> breakPattern = new Dictionary<Rock.RockSizes, Rock.RockSizes>();
     
     public override void _Ready()
     {
         AddToGroup("Main");
         PopulateDictionary();
         
-        _global = GetTree().Root.GetNode<Global>("Global");
-        _rockSpawnLocations = GetNode<Node>("RockSpawnLocations");
-        _rockContainer = GetNode<Node>("RockContainer");
-        _countDown = GetNode<CountDown>("CountDown");
-        _gameTrack = GetNode<AudioStreamPlayer>("GameTrack");
-        _camera = GetNode<Camera2D>("Camera2D");
+        global = GetTree().Root.GetNode<Global>("Global");
+        rockSpawnLocations = GetNode<Node>("RockSpawnLocations");
+        rockContainer = GetNode<Node>("RockContainer");
+        countDown = GetNode<CountDown>("CountDown");
+        gameTrack = GetNode<AudioStreamPlayer>("GameTrack");
+        camera = GetNode<Camera2D>("Camera2D");
         
+        spawnPosition = new SpawnPosition(11);
         spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
-        _totalNumberOfRocks = _global.Level.NumberOfRocks;
-        _levelRockCount = _global.Level.NumberOfRocks;
+        totalNumberOfRocks = global.Level.NumberOfRocks;
+        levelRockCount = global.Level.NumberOfRocks;
 
-        for (var i = 0; i < _totalNumberOfRocks; i++)
-            SpawnRock(Rock.RockSizes.Large, _rockSpawnLocations.GetChild<Position2D>(i).Position, Vector2.Zero);
-        
-        _gameTrack.Play();    
+        for (var i = 0; i < totalNumberOfRocks; i++)
+        {
+            var positionIndex = spawnPosition.GetNextPositionIndex();
+            SpawnRock(Rock.RockSizes.Large, rockSpawnLocations.GetChild<Position2D>(positionIndex).Position, Vector2.Zero);
+        }
+
+        gameTrack.Play();    
         
     }
 
     private void PopulateDictionary()
     {
-        _breakPattern.Add(Rock.RockSizes.Large, Rock.RockSizes.Medium);
-        _breakPattern.Add(Rock.RockSizes.Medium, Rock.RockSizes.Small);
-        _breakPattern.Add(Rock.RockSizes.Small, Rock.RockSizes.Tiny);
-        _breakPattern.Add(Rock.RockSizes.Tiny, Rock.RockSizes.Dead);
+        breakPattern.Add(Rock.RockSizes.Large, Rock.RockSizes.Medium);
+        breakPattern.Add(Rock.RockSizes.Medium, Rock.RockSizes.Small);
+        breakPattern.Add(Rock.RockSizes.Small, Rock.RockSizes.Tiny);
+        breakPattern.Add(Rock.RockSizes.Tiny, Rock.RockSizes.Dead);
     }
 
     private void SpawnRock(Rock.RockSizes rockSize, Vector2 position, Vector2 velocity)
     {
         var spaceRock = (Rock) spaceRockScene.Instance();
-        _rockContainer.AddChild(spaceRock);
+        rockContainer.AddChild(spaceRock);
         spaceRock._rockSize = rockSize;
         spaceRock._startPosition = position;
         spaceRock.Connect("Death", this, nameof(ExplodeRock));
@@ -57,7 +65,7 @@ public class Main : Node
 
     private void ExplodeRock(Rock.RockSizes size, Vector2 position, Vector2 velocity, Vector2 hitVelocity)
     {
-        var newSize = _breakPattern[size];
+        var newSize = breakPattern[size];
         var offsets = new List<int> {-1, 1};
         if (newSize == Rock.RockSizes.Dead) return;
         foreach (var offset in offsets)
@@ -71,10 +79,10 @@ public class Main : Node
 
     public void UpdateRockLevel(int rocks)
     {
-        _levelRockCount += rocks;
-        if (_levelRockCount > 0) return;
+        levelRockCount += rocks;
+        if (levelRockCount > 0) return;
         
-        _countDown.StartCountDown();
+        countDown.StartCountDown();
     }
 
     private void CountDownComplete()
