@@ -52,83 +52,115 @@ __meta__ = {
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 630.0
-margin_bottom = 172.0
+margin_bottom = 164.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
 margin_right = 620.0
 margin_bottom = 34.0
+columns = 4
 
-[node name="Score" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_right = 281.0
+[node name="Score" type="VBoxContainer" parent="VBoxContainer/GridContainer"]
+margin_right = 152.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
 custom_constants/separation = -2
 
-[node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer/Score"]
-margin_right = 281.0
+[node name="ScoreLabel" type="Label" parent="VBoxContainer/GridContainer/Score"]
+margin_right = 152.0
 margin_bottom = 14.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.396078, 0.701961, 0.996078, 1 )
 text = "Score"
 
-[node name="ScoreText" type="Label" parent="VBoxContainer/HBoxContainer/Score"]
+[node name="ScoreText" type="Label" parent="VBoxContainer/GridContainer/Score"]
 margin_top = 12.0
-margin_right = 281.0
+margin_right = 152.0
 margin_bottom = 34.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "0"
 
-[node name="Level" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 285.0
-margin_right = 335.0
+[node name="Level" type="VBoxContainer" parent="VBoxContainer/GridContainer"]
+margin_left = 156.0
+margin_right = 308.0
 margin_bottom = 34.0
+size_flags_horizontal = 3
 custom_constants/separation = -2
 
-[node name="LevelLabel" type="Label" parent="VBoxContainer/HBoxContainer/Level"]
-margin_right = 50.0
+[node name="LevelLabel" type="Label" parent="VBoxContainer/GridContainer/Level"]
+margin_right = 152.0
 margin_bottom = 14.0
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.396078, 0.701961, 0.996078, 1 )
 text = "Level"
 align = 1
 
-[node name="LevelText" type="Label" parent="VBoxContainer/HBoxContainer/Level"]
+[node name="LevelText" type="Label" parent="VBoxContainer/GridContainer/Level"]
 margin_top = 12.0
-margin_right = 50.0
+margin_right = 152.0
 margin_bottom = 34.0
 custom_fonts/font = SubResource( 4 )
 text = "0"
 align = 1
 
-[node name="Shield" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 339.0
+[node name="PowerUp" type="VBoxContainer" parent="VBoxContainer/GridContainer"]
+margin_left = 312.0
+margin_right = 464.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+custom_constants/separation = -2
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="VBoxContainer/GridContainer/PowerUp"]
+margin_right = 152.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.933333, 0.603922, 0.0862745, 1 )
+text = "power up"
+align = 1
+
+[node name="LevelText" type="Label" parent="VBoxContainer/GridContainer/PowerUp"]
+margin_top = 12.0
+margin_right = 152.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 1
+
+[node name="Shield" type="VBoxContainer" parent="VBoxContainer/GridContainer"]
+margin_left = 468.0
 margin_right = 620.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
 custom_constants/separation = -2
 
-[node name="ShieldLabel" type="Label" parent="VBoxContainer/HBoxContainer/Shield"]
-margin_right = 281.0
+[node name="ShieldLabel" type="Label" parent="VBoxContainer/GridContainer/Shield"]
+margin_right = 152.0
 margin_bottom = 14.0
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.396078, 0.701961, 0.996078, 1 )
 text = "Shield"
 align = 2
 
-[node name="ShieldText" type="Label" parent="VBoxContainer/HBoxContainer/Shield"]
+[node name="ShieldText" type="Label" parent="VBoxContainer/GridContainer/Shield"]
 margin_top = 12.0
-margin_right = 281.0
+margin_right = 152.0
 margin_bottom = 34.0
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "0%"
 align = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 38.0
 margin_right = 620.0
 margin_bottom = 38.0
+custom_constants/separation = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+margin_top = 42.0
+margin_right = 620.0
+margin_bottom = 42.0
 
 [node name="GameOverLabel" type="Label" parent="VBoxContainer/CenterContainer"]
 visible = false
@@ -140,9 +172,9 @@ custom_fonts/font = SubResource( 7 )
 text = "Game over"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 42.0
+margin_top = 46.0
 margin_right = 620.0
-margin_bottom = 112.0
+margin_bottom = 116.0
 custom_constants/margin_right = 240
 custom_constants/margin_top = 50
 custom_constants/margin_left = 240

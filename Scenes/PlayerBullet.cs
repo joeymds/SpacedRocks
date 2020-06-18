@@ -1,35 +1,47 @@
+using System.Runtime.CompilerServices;
 using Godot;
 using SpacedRocks.Common;
 
 public class PlayerBullet : Area2D
 {
-    public enum BulletType
+    public enum BulletStates
     {
         Standard, Powered
     }
-    
+
+    private Global global;
+    private Sprite sprite;
     private Vector2 velocity = Vector2.Zero;
     private Light2D bulletLight;
+    private Timer lifeTime;
     
-    public BulletType bulletType = BulletType.Standard;
+    private Color standardColor = new Color(0.36f, 0.83f, 0.93f, 1.0f);
+    private Color poweredColor = new Color(0.94f, 0.48f, 0.32f, 1.0f);
+
+    public BulletStates bulletState = BulletStates.Standard;
 
     [Export()] private int speed = 600;
 
     public override void _Ready()
     {
+        global = GetTree().Root.GetNode<Global>("Global");
+        sprite = GetNode<Sprite>("Sprite");
+        lifeTime = GetNode<Timer>("Lifetime");
         bulletLight = GetNode<Light2D>("BulletLight");
     }
 
     public override void _Process(float delta)
     {
         Position += velocity * delta;
-        switch (bulletType)
+        switch (bulletState)
         {
-            case BulletType.Standard:
-                //bulletLight.Color = new Color(131, 239, 253, 255);
+            case BulletStates.Standard:
+                bulletLight.Color = standardColor;
+                sprite.Texture = global.NormalBulletTexture;
                 break;
-            case BulletType.Powered:
-                //bulletLight.Color = new Color(239, 111, 94, 255);
+            case BulletStates.Powered:
+                bulletLight.Color = poweredColor;
+                sprite.Texture = global.PoweredBulletTexture;
                 break;
         }
     }
@@ -41,6 +53,12 @@ public class PlayerBullet : Area2D
         velocity = new Vector2(speed, 0).Rotated(direction - Mathf.Pi/2);
     }
 
+    public void setBulletState(BulletStates state)
+    {
+        bulletState = state;
+        lifeTime.WaitTime = bulletState == BulletStates.Standard ? 0.4f : 0.6f;
+    }
+    
     private void OnPlayerBulletBodyEntered(ref Rock rock)
     {
         rock.Explode(rock._rockSize, rock._velocity, velocity.Normalized());

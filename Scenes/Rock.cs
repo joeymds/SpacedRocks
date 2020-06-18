@@ -143,9 +143,9 @@ public class Rock : KinematicBody2D
     
     public void Explode(Rock.RockSizes size, Vector2 velocity, Vector2 hitVelocity)
     {
+        EmitSignal("Death", size, Position, velocity, hitVelocity);
         ShowExplosion();
         PlayExplosionSound();
-        EmitSignal("Death", size, Position, velocity, hitVelocity);
         GetTree().CallGroup("Main", "UpdateRockLevel", -1);
         QueueFree();
     }

@@ -11,7 +11,7 @@ public class Player : KinematicBody2D
     [Export()] public double Friction = 0.01;
     [Export()] public PackedScene bullet;
     [Export()] public int Shield = 100;
-    [Export()] public int ShieldRechargeValue = 3;
+    [Export()] public int ShieldRechargeValue = 5;
     [Export()] public int ShieldRechargeInterval = 3;
     [Export()] public double ShootWaitTime = 0.4;
 
@@ -170,6 +170,9 @@ public class Player : KinematicBody2D
         shootSound.Play();
         var newBullet = (PlayerBullet)bullet.Instance();
         bulletContainer.AddChild(newBullet);
+        newBullet.setBulletState(powerUpInEffect
+            ? PlayerBullet.BulletStates.Powered
+            : PlayerBullet.BulletStates.Standard);
         newBullet.StartAt(Rotation, muzzle.GlobalPosition);
         shipSprite.Play("Shoot");
     }

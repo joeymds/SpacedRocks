@@ -13,17 +13,20 @@ public class Global : Node2D
     private List<Level> _levels = new List<Level>();
     private Level _currentLevel;
 
+    public Texture NormalBulletTexture;
+    public Texture PoweredBulletTexture;
+
     public int Shield { get; set; }     
     public int PlayerScore { get; set; }
     public int RockCount { get; set; }
-
     public bool GameOver { get; set; }
-
     public LevelStates LevelState { get; set; }
 
     public Global()
     {
         GameOver = false;
+        NormalBulletTexture = ResourceLoader.Load("res://GFX/Bullets/Bullet-01.png") as Texture;
+        PoweredBulletTexture = ResourceLoader.Load("res://GFX/Bullets/Bullet-02.png") as Texture;
         createLevels();
         LevelState = LevelStates.Active;
     }
