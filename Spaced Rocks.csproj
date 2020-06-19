@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\EntityScores.cs" />
+    <Compile Include="Common\GameLevels.cs" />
     <Compile Include="Common\Level.cs" />
     <Compile Include="Common\ScreenWrap.cs" />
     <Compile Include="Common\SpawnPosition.cs" />

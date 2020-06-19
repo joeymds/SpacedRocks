@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+
 using Godot;
 using SpacedRocks.Common;
 
@@ -15,10 +15,10 @@ public class PlayerBullet : Area2D
     private Light2D bulletLight;
     private Timer lifeTime;
     
-    private Color standardColor = new Color(0.36f, 0.83f, 0.93f, 1.0f);
-    private Color poweredColor = new Color(0.94f, 0.48f, 0.32f, 1.0f);
+    private readonly Color standardColor = new Color(0.36f, 0.83f, 0.93f, 1.0f);
+    private readonly Color poweredColor = new Color(0.96f, 0.92f, 0.48f, 1.0f);
 
-    public BulletStates bulletState = BulletStates.Standard;
+    private BulletStates bulletState = BulletStates.Standard;
 
     [Export()] private int speed = 600;
 
@@ -61,9 +61,9 @@ public class PlayerBullet : Area2D
     
     private void OnPlayerBulletBodyEntered(ref Rock rock)
     {
-        rock.Explode(rock._rockSize, rock._velocity, velocity.Normalized());
+        rock.Explode(rock.rockSize, rock.rockVelocity, velocity.Normalized());
         var entityScores = new EntityScores();
-        var rockScore = entityScores.getRockScore(rock._rockSize);
+        var rockScore = entityScores.getRockScore(rock.rockSize);
         GetTree().CallGroup("Global", "RockHit", rockScore);
         GetTree().CallGroup("Camera", "RockHit");
         QueueFree();

@@ -81,9 +81,6 @@ text = "1"
 margin_bottom = 54.0
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" parent="UI" index="0"]
-margin_bottom = 122.0
-
 [node name="GameTrack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
@@ -123,13 +120,13 @@ text = "Paused"
 [node name="Camera2D" parent="." instance=ExtResource( 9 )]
 
 [node name="PowerUp" parent="." instance=ExtResource( 10 )]
-position = Vector2( 226, 181.935 )
+position = Vector2( 109.71, 258.065 )
 
 [node name="PowerUp2" parent="." instance=ExtResource( 10 )]
-position = Vector2( 413, 149.977 )
+position = Vector2( 320, 33 )
 
 [node name="PowerUp3" parent="." instance=ExtResource( 10 )]
-position = Vector2( 429, 234.007 )
+position = Vector2( 528.424, 256.007 )
 
 [editable path="CountDown"]
 

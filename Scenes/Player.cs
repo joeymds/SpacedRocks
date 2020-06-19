@@ -14,6 +14,7 @@ public class Player : KinematicBody2D
     [Export()] public int ShieldRechargeValue = 5;
     [Export()] public int ShieldRechargeInterval = 3;
     [Export()] public double ShootWaitTime = 0.4;
+    [Export()] public int PowerUpDuration = 10;
 
     private enum PlayerStates
     {
@@ -42,6 +43,7 @@ public class Player : KinematicBody2D
     private Timer gunTimer;
     private Timer shieldRechargeTimer;
     private Timer powerUpTimer;
+    private Timer powerUpTick;
 
     private ScreenWrap screenWrap;
     private EntityScores entityScores;
@@ -50,6 +52,8 @@ public class Player : KinematicBody2D
     private AudioStreamPlayer thrustAudio;
     private AudioStreamPlayer rechargeBeep;
     private AudioStreamPlayer2D shieldSound;
+
+    private int PowerUpTickCountDown = 0;
 
     public override void _Ready()
     {
@@ -157,7 +161,6 @@ public class Player : KinematicBody2D
         shipSprite.Play("Explode");
     }
 
-
     private void PlayerIsNowDead()
     {
         QueueFree();
@@ -196,10 +199,12 @@ public class Player : KinematicBody2D
         {
             Shield = 0;
             global.GameOver = true;
+            powerUpTick?.Stop();
+            RemoveChild(powerUpTick);
             playerState = PlayerStates.dead;
             shieldRechargeTimer.Stop();
         }
-        global.Shield = Shield;
+        GetTree().CallGroup("Global", "UpdateShield", Shield);
     }
     
     private void ShieldCollisionOver()
@@ -210,34 +215,37 @@ public class Player : KinematicBody2D
 
     private void OnShieldRechargeTimerTimeout()
     {
-        if (Shield < 100)
-        {
-            if (Shield >= 100)
-                Shield = 100;
-            
-            Shield += ShieldRechargeValue;
-            rechargeBeep.Play();
-        }
-        global.Shield = Shield;
+        if (Shield >= 100) return;
+
+        Shield += ShieldRechargeValue;
+        rechargeBeep.Play();
+        GetTree().CallGroup("Global", "UpdateShield", Shield);
     }
 
     public void PowerUp()
     {
-        if (powerUpInEffect)
-            return;
-
         powerUpInEffect = true;
-        gunTimer.WaitTime = 0.15f;
-        powerUpTimer = new Timer {WaitTime = 10, OneShot = true};
-        powerUpTimer.Connect("timeout", this, nameof(PowerUpCompleted));
-        AddChild(powerUpTimer);
-        powerUpTimer.Start();
+        gunTimer.WaitTime = 0.10f;
+        powerUpTick = new Timer { WaitTime = 1, OneShot = false };
+        PowerUpTickCountDown += PowerUpDuration;
+        powerUpTick.Connect("timeout", this, nameof(OnPowerUpTick));
+        AddChild(powerUpTick);
+        powerUpTick.Start();
     }
+    
 
-    private void PowerUpCompleted()
+    private void OnPowerUpTick()
     {
-        powerUpInEffect = false;
-        RemoveChild(powerUpTimer);
-        gunTimer.WaitTime = 0.4f;
+        GetTree().CallGroup("Global", "SetPowerUpValue", PowerUpTickCountDown);
+        if (PowerUpTickCountDown <= 0)
+        {
+            powerUpTick.Stop();
+            RemoveChild(powerUpTick);
+            gunTimer.WaitTime = 0.4f;
+            powerUpInEffect = false;
+            return;
+        }
+        PowerUpTickCountDown -= 1;
+
     }
 }

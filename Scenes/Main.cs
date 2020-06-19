@@ -57,9 +57,8 @@ public class Main : Node
     {
         var spaceRock = (Rock) spaceRockScene.Instance();
         rockContainer.AddChild(spaceRock);
-        spaceRock._rockSize = rockSize;
+        spaceRock.rockSize = rockSize;
         spaceRock._startPosition = position;
-        spaceRock.Connect("Death", this, nameof(ExplodeRock));
         spaceRock.InitRock(velocity);
     }
 
@@ -67,7 +66,13 @@ public class Main : Node
     {
         var newSize = breakPattern[size];
         var offsets = new List<int> {-1, 1};
-        if (newSize == Rock.RockSizes.Dead) return;
+        
+        if (newSize == Rock.RockSizes.Dead)
+        {
+            UpdateRockLevel(-1);
+            return;
+        }
+        
         foreach (var offset in offsets)
         {
             UpdateRockLevel(1);
@@ -75,13 +80,13 @@ public class Main : Node
             var newVelocity = (velocity + hitVelocity.Tangent()) * offset;
             SpawnRock(newSize, newPosition, newVelocity);
         }
+        UpdateRockLevel(-1);
     }
 
-    public void UpdateRockLevel(int rocks)
+    private void UpdateRockLevel(int rocks)
     {
         levelRockCount += rocks;
         if (levelRockCount > 0) return;
-        
         countDown.StartCountDown();
     }
 

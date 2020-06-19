@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/PowerUpBeep.ogg-f528186ec18fa230e17edc1664be046c.oggstr"
+
+[deps]
+
+source_file="res://SFX/Beeps/PowerUpBeep.ogg"
+dest_files=[ "res://.import/PowerUpBeep.ogg-f528186ec18fa230e17edc1664be046c.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

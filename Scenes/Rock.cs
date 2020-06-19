@@ -6,10 +6,10 @@ using SpacedRocks.Common;
 public class Rock : KinematicBody2D
 {
     private Vector2 _screenSize = Vector2.Zero;
+    private Vector2 _spriteSize = Vector2.Zero;
     private ScreenWrap _screenWrap;
     private Sprite _rockSprite;
     private double _rotationSpeed;
-    private Vector2 _spriteSize = Vector2.Zero;
     private Texture _texture;
     private CollisionShape2D _collision;
     private Particles2D _puff;
@@ -32,12 +32,9 @@ public class Rock : KinematicBody2D
     
     public readonly Dictionary<RockSizes, string> _rocks = new Dictionary<RockSizes, string>();
 
-    [Signal]
-    public delegate void Death();
-    
-    public Vector2 _velocity = Vector2.Zero;
+    public Vector2 rockVelocity = Vector2.Zero;
 
-    [Export()] public RockSizes _rockSize = RockSizes.Large;
+    [Export()] public RockSizes rockSize = RockSizes.Large;
     [Export()] public Vector2 _startPosition = Vector2.Zero;
     [Export()] private Vector2 _initVelocity = Vector2.Zero;
     [Export()] private double _bounce = 1;
@@ -51,14 +48,14 @@ public class Rock : KinematicBody2D
         PopulateDictionary();
         _screenSize = GetViewportRect().Size;
         _screenWrap = new ScreenWrap(_screenSize, 8);
-        _hitBox.RockSize = _rockSize;
+        _hitBox.RockSize = rockSize;
         InitRock(_initVelocity);
     }    
 
     public void InitRock(Vector2 velocity)
     {
         var rand = new Random();
-        _velocity = velocity.Length() > 0 ? velocity : new Vector2(rand.Next(30, 100), 0).Rotated(SpawnPosition.RandomRadian());
+        rockVelocity = velocity.Length() > 0 ? velocity : new Vector2(rand.Next(30, 100), 0).Rotated(SpawnPosition.RandomRadian());
         _rotationSpeed = rand.Next(-3, 3);
         
         LoadTexture();
@@ -72,7 +69,7 @@ public class Rock : KinematicBody2D
     
     private void LoadTexture()
     {
-        _texture = ResourceLoader.Load(_rocks[_rockSize]) as Texture;
+        _texture = ResourceLoader.Load(_rocks[rockSize]) as Texture;
         _rockSprite = GetNode<Sprite>("Sprite");
         _rockSprite.Texture = _texture;
         _spriteSize = _texture.GetSize();
@@ -123,30 +120,23 @@ public class Rock : KinematicBody2D
     
     public override void _PhysicsProcess(float delta)
     {
-        _velocity = _velocity.Clamped(500);
+        rockVelocity = rockVelocity.Clamped(500);
         Rotation += (float)_rotationSpeed * delta;
-        var collision = MoveAndCollide(_velocity * delta, false, true, false);
+        var collision = MoveAndCollide(rockVelocity * delta, false, true, false);
         if (collision != null)
         {
-            var col = (Node2D) collision.Collider;
-            if (col.Name == "player")
-                Explode(_rockSize, _velocity, collision.ColliderVelocity);
-            else
-            {
-                _velocity = _velocity.Bounce(collision.Normal) * (float)_bounce;
-                _puff.GlobalPosition = collision.Position;
-                _puff.Emitting = true;
-            }
+            rockVelocity = rockVelocity.Bounce(collision.Normal) * (float)_bounce;
+            _puff.GlobalPosition = collision.Position;
+            _puff.Emitting = true;
         }
         Position = _screenWrap.WrappedPosition(Position, _spriteSize);
     }
     
     public void Explode(Rock.RockSizes size, Vector2 velocity, Vector2 hitVelocity)
     {
-        EmitSignal("Death", size, Position, velocity, hitVelocity);
+        GetTree().CallGroup("Main", "ExplodeRock", rockSize, Position, velocity, hitVelocity);
         ShowExplosion();
         PlayExplosionSound();
-        GetTree().CallGroup("Main", "UpdateRockLevel", -1);
         QueueFree();
     }
 

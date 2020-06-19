@@ -3,36 +3,45 @@ using System;
 
 public class UI : MarginContainer
 {
-    private Global _global;
-    private Label _scoreText;
-    private Label _shieldText;
-    private Label _level;
-    private Label _gameOverLabel;
-    private Button _restartButton;
+    private Global global;
+    private Label scoreText;
+    private Label shieldText;
+    private Label level;
+    private Label gameOverLabel;
+    private Label PowerUpText;
+    private Button restartButton;
     
     public override void _Ready()
     {
-        _global = GetTree().Root.GetNode<Global>("Global");
-        _scoreText = GetNode<Label>("VBoxContainer/HBoxContainer/Score/ScoreText");
-        _shieldText = GetNode<Label>("VBoxContainer/HBoxContainer/Shield/ShieldText");
-        _level = GetNode<Label>("VBoxContainer/HBoxContainer/Level/LevelText");
-        _gameOverLabel = GetNode<Label>("VBoxContainer/CenterContainer/GameOverLabel");
-        _restartButton = GetNode<Button>("VBoxContainer/MarginContainer/RestartButton");
+        global = GetTree().Root.GetNode<Global>("Global");
+        scoreText = GetNode<Label>("VBoxContainer/GridContainer/Score/ScoreText");
+        shieldText = GetNode<Label>("VBoxContainer/GridContainer/Shield/ShieldText");
+        level = GetNode<Label>("VBoxContainer/GridContainer/Level/LevelText");
+        gameOverLabel = GetNode<Label>("VBoxContainer/CenterContainer/GameOverLabel");
+        restartButton = GetNode<Button>("VBoxContainer/MarginContainer/RestartButton");
+        PowerUpText = GetNode<Label>("VBoxContainer/GridContainer/PowerUp/PowerUpText");
+        
     }
 
     public override void _Process(float delta)
     {
-        _scoreText.Text = _global.PlayerScore.ToString();
-        _shieldText.Text = $"{_global.Shield.ToString()}%" ;
-        _level.Text = _global.Level.LevelNumber.ToString();
-        _gameOverLabel.Visible = _global.GameOver;
-        _restartButton.Visible = _global.GameOver;
+        scoreText.Text = global.PlayerScore.ToString();
+        shieldText.Text = $"{global.Shield.ToString()}%" ;
+        level.Text = global.Level.LevelNumber.ToString();
+        gameOverLabel.Visible = global.GameOver;
+        restartButton.Visible = global.GameOver;
+        PowerUpTextDisplay();
     }
 
     private void OnReloadButtonPressed()
     {
-        _global.ResetGame();   
+        global.ResetGame();   
         GetParent().QueueFree();
         GetTree().ChangeScene("res://Scenes/Game.tscn");
+    }
+
+    private void PowerUpTextDisplay()
+    {
+        PowerUpText.Text = global.PowerUpCountDown == 0 ? "0" : global.PowerUpCountDown.ToString();
     }
 }
