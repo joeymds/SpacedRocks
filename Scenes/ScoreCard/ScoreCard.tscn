@@ -53,13 +53,13 @@ tracks/2/keys = {
 script = ExtResource( 2 )
 
 [node name="ScoreText" type="Label" parent="."]
-margin_left = -20.403
-margin_top = -50.3022
-margin_right = 20.597
-margin_bottom = -28.3022
+margin_left = -20.6787
+margin_top = -10.6151
+margin_right = 20.3213
+margin_bottom = 11.3849
 rect_pivot_offset = Vector2( 20.5, 11 )
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.501961, 0.682353, 1, 0 )
+custom_colors/font_color = Color( 0.501961, 0.682353, 1, 1 )
 text = "100"
 align = 1
 valign = 1

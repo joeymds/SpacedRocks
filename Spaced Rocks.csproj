@@ -65,6 +65,7 @@
     <Compile Include="Scenes\Explosion.cs" />
     <Compile Include="Scenes\Game.cs" />
     <Compile Include="Scenes\GreenOog\GreenOog.cs" />
+    <Compile Include="Scenes\GreenOog\OogShot.cs" />
     <Compile Include="Scenes\HitBox.cs" />
     <Compile Include="Scenes\Main.cs" />
     <Compile Include="Scenes\Pause.cs" />

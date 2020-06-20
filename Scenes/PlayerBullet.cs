@@ -60,7 +60,7 @@ public class PlayerBullet : Area2D
     }
     
     private void OnPlayerBulletBodyEntered(Node node)
-    {
+    { 
         if (node.Name.Contains("Rock"))
         {
             var rock = (Rock) node;
@@ -69,6 +69,13 @@ public class PlayerBullet : Area2D
             var rockScore = entityScores.getRockScore(rock.rockSize);
             GetTree().CallGroup("Global", "RockHit", rockScore);
             GetTree().CallGroup("Camera", "RockHit");
+            QueueFree();
+        }
+
+        if (node.Name.Contains("GreenOog"))
+        {
+            var greenOog = (GreenOog) node;
+            greenOog.TakeDamage(5);
             QueueFree();
         }
     }

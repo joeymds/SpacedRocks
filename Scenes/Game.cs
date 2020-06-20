@@ -1,6 +1,6 @@
 using Godot;
 
-public class Game : Node2D
+public class Game : Node
 {
     private Global _global;
     private Button _startButton;
@@ -8,7 +8,7 @@ public class Game : Node2D
     public override void _Ready()
     {
         _global = GetTree().Root.GetNode<Global>("Global");
-        _startButton = GetNode<Button>("GameUI/CenterContainer/VBoxContainer/MarginContainer/StartButton");
+        _startButton = GetNode<Button>("CanvasLayer/GameUI/CenterContainer/VBoxContainer/MarginContainer/StartButton");
         _startButton.Connect("pressed", this, nameof(OnStartButtonPressed));
     }
 
