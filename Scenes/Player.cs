@@ -240,7 +240,6 @@ public class Player : KinematicBody2D
         if (PowerUpTickCountDown <= 0)
         {
             powerUpTick.Stop();
-            RemoveChild(powerUpTick);
             gunTimer.WaitTime = 0.4f;
             powerUpInEffect = false;
             return;

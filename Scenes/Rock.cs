@@ -5,16 +5,19 @@ using SpacedRocks.Common;
 
 public class Rock : KinematicBody2D
 {
-    private Vector2 _screenSize = Vector2.Zero;
-    private Vector2 _spriteSize = Vector2.Zero;
-    private ScreenWrap _screenWrap;
-    private Sprite _rockSprite;
+    private Vector2 screenSize = Vector2.Zero;
+    private Vector2 spriteSize = Vector2.Zero;
+    private ScreenWrap screenWrap;
+    private Sprite rockSprite;
+    private Texture texture;
+    private CollisionShape2D collision;
+    private Particles2D puff;
+    private HitBox hitBox;
+    private CollisionShape2D collisionHitBox;
+    private PackedScene ScoreCard;
+    private EntityScores entityScores;
+
     private double _rotationSpeed;
-    private Texture _texture;
-    private CollisionShape2D _collision;
-    private Particles2D _puff;
-    private HitBox _hitBox;
-    private CollisionShape2D _collisionHitBox;
     
     public enum RockSizes
     {
@@ -41,14 +44,18 @@ public class Rock : KinematicBody2D
 
     public override void _Ready()
     {
-        _puff = GetNode<Particles2D>("Puff");
-        _hitBox = GetNode<HitBox>("HitBox");
+        entityScores = new EntityScores();
+        
+        puff = GetNode<Particles2D>("Puff");
+        hitBox = GetNode<HitBox>("HitBox");
+
+        ScoreCard = (PackedScene) ResourceLoader.Load("res://Scenes/ScoreCard/ScoreCard.tscn");
         
         AddToGroup("Rocks");
         PopulateDictionary();
-        _screenSize = GetViewportRect().Size;
-        _screenWrap = new ScreenWrap(_screenSize, 8);
-        _hitBox.RockSize = rockSize;
+        screenSize = GetViewportRect().Size;
+        screenWrap = new ScreenWrap(screenSize, 8);
+        hitBox.RockSize = rockSize;
         InitRock(_initVelocity);
     }    
 
@@ -62,28 +69,28 @@ public class Rock : KinematicBody2D
         AttachCollisionShape();
         
         if (_startPosition == Vector2.Zero)
-            _startPosition = _screenSize / 2;
+            _startPosition = screenSize / 2;
         Position = _startPosition;
   
     }
     
     private void LoadTexture()
     {
-        _texture = ResourceLoader.Load(_rocks[rockSize]) as Texture;
-        _rockSprite = GetNode<Sprite>("Sprite");
-        _rockSprite.Texture = _texture;
-        _spriteSize = _texture.GetSize();
+        texture = ResourceLoader.Load(_rocks[rockSize]) as Texture;
+        rockSprite = GetNode<Sprite>("Sprite");
+        rockSprite.Texture = texture;
+        spriteSize = texture.GetSize();
     }
 
     private void AttachCollisionShape()
     {
-        var rockWidth = _texture.GetWidth() / 2;
-        var rockHeight = _texture.GetHeight() / 2;
+        var rockWidth = texture.GetWidth() / 2;
+        var rockHeight = texture.GetHeight() / 2;
         
-        _collision = GetNode<CollisionShape2D>("CollisionShape");
-        _collisionHitBox = GetNode<CollisionShape2D>("HitBox/CollisionHitBox");
-        _collision.Shape = new CircleShape2D {Radius = Math.Min(rockWidth, rockHeight)};
-        _collisionHitBox.Shape = new CircleShape2D {Radius = Math.Min(rockWidth - 1, rockHeight - 1)};
+        collision = GetNode<CollisionShape2D>("CollisionShape");
+        collisionHitBox = GetNode<CollisionShape2D>("HitBox/CollisionHitBox");
+        collision.Shape = new CircleShape2D {Radius = Math.Min(rockWidth, rockHeight)};
+        collisionHitBox.Shape = new CircleShape2D {Radius = Math.Min(rockWidth - 1, rockHeight - 1)};
     }
     
     private void PopulateDictionary()
@@ -126,14 +133,19 @@ public class Rock : KinematicBody2D
         if (collision != null)
         {
             rockVelocity = rockVelocity.Bounce(collision.Normal) * (float)_bounce;
-            _puff.GlobalPosition = collision.Position;
-            _puff.Emitting = true;
+            puff.GlobalPosition = collision.Position;
+            puff.Emitting = true;
         }
-        Position = _screenWrap.WrappedPosition(Position, _spriteSize);
+        Position = screenWrap.WrappedPosition(Position, spriteSize);
     }
     
     public void Explode(Rock.RockSizes size, Vector2 velocity, Vector2 hitVelocity)
     {
+        var scoreCard = (ScoreCard) ScoreCard.Instance();
+        scoreCard.ScoreText = entityScores.getRockScore(size).ToString();
+        scoreCard.StartPosition = GlobalPosition;
+        GetParent().AddChild(scoreCard);
+        
         GetTree().CallGroup("Main", "ExplodeRock", rockSize, Position, velocity, hitVelocity);
         ShowExplosion();
         PlayExplosionSound();

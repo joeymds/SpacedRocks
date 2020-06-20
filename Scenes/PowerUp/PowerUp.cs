@@ -13,6 +13,8 @@ public class PowerUp : KinematicBody2D
     private AnimationPlayer animationPlayer;
     private readonly Vector2 spriteSize = new Vector2(25, 25);
     
+    [Export()] public Vector2 startPosition = Vector2.Zero;
+    
     public override void _Ready()
     {
         consumeArea = GetNode<Area2D>("ConsumeArea");
@@ -22,8 +24,10 @@ public class PowerUp : KinematicBody2D
         velocity = velocity.Length() > 0
             ? velocity
             : new Vector2(rand.Next(5, 55), 0).Rotated(SpawnPosition.RandomRadian());
+        
         screenSize = GetViewportRect().Size;
         screenWrap = new ScreenWrap(screenSize, 8);
+        Position = startPosition;
         consumeArea.Connect("body_entered", this, nameof(OnConsumeAreaBodyEntered));
     }
 

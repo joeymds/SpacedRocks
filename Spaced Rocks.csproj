@@ -64,6 +64,7 @@
     <Compile Include="Scenes\CountDown.cs" />
     <Compile Include="Scenes\Explosion.cs" />
     <Compile Include="Scenes\Game.cs" />
+    <Compile Include="Scenes\GreenOog\GreenOog.cs" />
     <Compile Include="Scenes\HitBox.cs" />
     <Compile Include="Scenes\Main.cs" />
     <Compile Include="Scenes\Pause.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Scenes\PowerUp\PowerUp.cs" />
     <Compile Include="Scenes\Rock.cs" />
     <Compile Include="Scenes\RockExplosion.cs" />
+    <Compile Include="Scenes\ScoreCard\ScoreCard.cs" />
     <Compile Include="Scenes\UI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -59,14 +59,18 @@ public class PlayerBullet : Area2D
         lifeTime.WaitTime = bulletState == BulletStates.Standard ? 0.4f : 0.6f;
     }
     
-    private void OnPlayerBulletBodyEntered(ref Rock rock)
+    private void OnPlayerBulletBodyEntered(Node node)
     {
-        rock.Explode(rock.rockSize, rock.rockVelocity, velocity.Normalized());
-        var entityScores = new EntityScores();
-        var rockScore = entityScores.getRockScore(rock.rockSize);
-        GetTree().CallGroup("Global", "RockHit", rockScore);
-        GetTree().CallGroup("Camera", "RockHit");
-        QueueFree();
+        if (node.Name.Contains("Rock"))
+        {
+            var rock = (Rock) node;
+            rock.Explode(rock.rockSize, rock.rockVelocity, velocity.Normalized());
+            var entityScores = new EntityScores();
+            var rockScore = entityScores.getRockScore(rock.rockSize);
+            GetTree().CallGroup("Global", "RockHit", rockScore);
+            GetTree().CallGroup("Camera", "RockHit");
+            QueueFree();
+        }
     }
 
     private void OnLifetimeTimeout()

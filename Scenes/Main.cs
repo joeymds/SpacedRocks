@@ -6,11 +6,14 @@ public class Main : Node
 {
     private Global global;
     private PackedScene spaceRockScene;
+    private PackedScene powerUpScene;
     private Node rockSpawnLocations;
-    private Node rockContainer;
+    private Node powerUpSpawnLocations;
+    private Node assetContainer;
     
     private int totalNumberOfRocks;
     private int levelRockCount;
+    private int levelPowerUpCount;
 
     private SpawnPosition spawnPosition;
     private CountDown countDown;
@@ -25,21 +28,28 @@ public class Main : Node
         
         global = GetTree().Root.GetNode<Global>("Global");
         rockSpawnLocations = GetNode<Node>("RockSpawnLocations");
-        rockContainer = GetNode<Node>("RockContainer");
+        powerUpSpawnLocations = GetNode<Node>("PowerUpSpawnLocations");
+        assetContainer = GetNode<Node>("AssetContainer");
         countDown = GetNode<CountDown>("CountDown");
         gameTrack = GetNode<AudioStreamPlayer>("GameTrack");
         camera = GetNode<Camera2D>("Camera2D");
         
         spawnPosition = new SpawnPosition(11);
         spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
+        powerUpScene = (PackedScene) ResourceLoader.Load("res://Scenes/PowerUp/PowerUp.tscn");
+        
         totalNumberOfRocks = global.Level.NumberOfRocks;
         levelRockCount = global.Level.NumberOfRocks;
+        levelPowerUpCount = global.Level.NumberOfPowerUps;
 
         for (var i = 0; i < totalNumberOfRocks; i++)
         {
             var positionIndex = spawnPosition.GetNextPositionIndex();
             SpawnRock(Rock.RockSizes.Large, rockSpawnLocations.GetChild<Position2D>(positionIndex).Position, Vector2.Zero);
         }
+
+        for (var i = 0; i < levelPowerUpCount; i++)
+            SpawnPowerUp(i);
 
         gameTrack.Play();    
         
@@ -53,10 +63,17 @@ public class Main : Node
         breakPattern.Add(Rock.RockSizes.Tiny, Rock.RockSizes.Dead);
     }
 
+    private void SpawnPowerUp(int positionIndex)
+    {
+        var powerUp = (PowerUp) powerUpScene.Instance();
+        assetContainer.AddChild(powerUp);
+        powerUp.startPosition = powerUpSpawnLocations.GetChild<Position2D>(positionIndex).Position;
+    }
+    
     private void SpawnRock(Rock.RockSizes rockSize, Vector2 position, Vector2 velocity)
     {
         var spaceRock = (Rock) spaceRockScene.Instance();
-        rockContainer.AddChild(spaceRock);
+        assetContainer.AddChild(spaceRock);
         spaceRock.rockSize = rockSize;
         spaceRock._startPosition = position;
         spaceRock.InitRock(velocity);

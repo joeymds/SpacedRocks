@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scenes/ScoreCard/ScoreCard.cs" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 12
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "Run"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("ScoreText:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -20.6787, -10.6151 ), Vector2( -20.403, -50.3022 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "EndScoreCard"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("ScoreText:custom_colors/font_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.501961, 0.682353, 1, 1 ), Color( 0.501961, 0.682353, 1, 0 ) ]
+}
+
+[node name="ScoreCard" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ScoreText" type="Label" parent="."]
+margin_left = -20.403
+margin_top = -50.3022
+margin_right = 20.597
+margin_bottom = -28.3022
+rect_pivot_offset = Vector2( 20.5, 11 )
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.501961, 0.682353, 1, 0 )
+text = "100"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Run"
+anims/Run = SubResource( 2 )

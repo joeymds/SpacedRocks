@@ -9,7 +9,7 @@
 [ext_resource path="res://Scenes/Pause.cs" type="Script" id=7]
 [ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://Scenes/Camera2D.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Scenes/PowerUp/PowerUp.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/GreenOog/GreenOog.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -64,10 +64,24 @@ position = Vector2( 455.044, 258.065 )
 [node name="Position11" type="Position2D" parent="RockSpawnLocations"]
 position = Vector2( 174.248, 142 )
 
+[node name="PowerUpSpawnLocations" type="Node" parent="."]
+
+[node name="Position1" type="Position2D" parent="PowerUpSpawnLocations"]
+position = Vector2( 145, 91.8783 )
+
+[node name="Position2" type="Position2D" parent="PowerUpSpawnLocations"]
+position = Vector2( 478.477, 91.8783 )
+
+[node name="Position3" type="Position2D" parent="PowerUpSpawnLocations"]
+position = Vector2( 145, 298.715 )
+
+[node name="Position4" type="Position2D" parent="PowerUpSpawnLocations"]
+position = Vector2( 478.477, 298.715 )
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 320.013, 256.007 )
 
-[node name="RockContainer" type="Node" parent="."]
+[node name="AssetContainer" type="Node" parent="."]
 
 [node name="CountDown" parent="." instance=ExtResource( 5 )]
 
@@ -83,6 +97,8 @@ size_flags_horizontal = 3
 
 [node name="GameTrack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+
+[node name="TextVisuals" type="Node" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 10
@@ -119,14 +135,8 @@ text = "Paused"
 
 [node name="Camera2D" parent="." instance=ExtResource( 9 )]
 
-[node name="PowerUp" parent="." instance=ExtResource( 10 )]
-position = Vector2( 109.71, 258.065 )
-
-[node name="PowerUp2" parent="." instance=ExtResource( 10 )]
-position = Vector2( 320, 33 )
-
-[node name="PowerUp3" parent="." instance=ExtResource( 10 )]
-position = Vector2( 528.424, 256.007 )
+[node name="GreenOog" parent="." instance=ExtResource( 10 )]
+position = Vector2( 400.359, 62 )
 
 [editable path="CountDown"]
 
