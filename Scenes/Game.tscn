@@ -10,23 +10,23 @@
 [ext_resource path="res://GFX/buttons/blue-button-D.png" type="Texture" id=8]
 [ext_resource path="res://GFX/buttons/blue-button-W.png" type="Texture" id=9]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 36
 outline_size = 2
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=4]
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=5]
 size = 12
 outline_color = Color( 0.501961, 0.682353, 1, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 8.0
 loop = true
 step = 1.0
@@ -93,7 +93,7 @@ margin_left = 72.0
 margin_top = 16.0
 margin_right = 346.0
 margin_bottom = 49.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_outline_modulate = Color( 0.360784, 0.568627, 0.894118, 1 )
 text = "Space Rubble"
 align = 1
@@ -117,7 +117,7 @@ margin_left = 22.0
 margin_top = 1.0
 margin_right = 188.0
 margin_bottom = 16.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "Ship's Thrusters"
 valign = 1
 
@@ -136,7 +136,7 @@ margin_left = 22.0
 margin_top = 1.0
 margin_right = 165.0
 margin_bottom = 16.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "Turn ship left"
 align = 1
 valign = 1
@@ -156,7 +156,7 @@ margin_left = 22.0
 margin_top = 1.0
 margin_right = 171.0
 margin_bottom = 16.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "Turn ship right"
 align = 1
 valign = 1
@@ -176,7 +176,7 @@ margin_left = 53.0
 margin_top = 1.0
 margin_right = 113.0
 margin_bottom = 16.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "shoot"
 align = 1
 valign = 1
@@ -196,7 +196,7 @@ margin_left = 22.0
 margin_top = 1.0
 margin_right = 133.0
 margin_bottom = 16.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "pause game"
 align = 1
 valign = 1
@@ -215,7 +215,7 @@ margin_left = 100.0
 margin_top = 10.0
 margin_right = 246.0
 margin_bottom = 31.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color_disabled = Color( 0.501961, 0.682353, 1, 1 )
 text = "Start"
 __meta__ = {
@@ -226,11 +226,11 @@ __meta__ = {
 margin_top = 288.0
 margin_right = 346.0
 margin_bottom = 300.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.501961, 0.682353, 1, 1 )
 text = "by Joey Matos Dos Santos"
 align = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/GameUI"]
 autoplay = "Rock"
-anims/Rock = SubResource( 6 )
+anims/Rock = SubResource( 5 )

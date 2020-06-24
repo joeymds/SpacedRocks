@@ -64,17 +64,14 @@ public class Player : KinematicBody2D
         shootSound = GetNode<AudioStreamPlayer>("Audio/ShootSound");
         thrustAudio = GetNode<AudioStreamPlayer>("Audio/ThrustSound");
         rechargeBeep = GetNode<AudioStreamPlayer>("Audio/RechargeBeep");
-        
-        bullet = (PackedScene) ResourceLoader.Load("res://Scenes/PlayerBullet.tscn");
-        
         thrustLight = GetNode<Light2D>("ThrustLight");
         shield = GetNode<Area2D>("Shield");
         shieldPlayer = GetNode<AnimationPlayer>("Shield/ShieldPlayer");
-        
         gunTimer = GetNode<Timer>("GunTimer");
         shieldRechargeTimer = GetNode<Timer>("ShieldRechargeTimer");
-
         shieldSound = GetNode<AudioStreamPlayer2D>("Shield/AudioStreamPlayer2D");
+        
+        bullet = (PackedScene) ResourceLoader.Load("res://Scenes/PlayerBullet.tscn");
 
         screenSize = GetViewportRect().Size;
         screenWrap = new ScreenWrap(screenSize, 8);
@@ -184,12 +181,14 @@ public class Player : KinematicBody2D
     {
         if (vulnerable == false)
             return;
-            
+        
+        GD.Print(hitBox.GetParent().Name);
         shieldSound.Play();
         vulnerable = false;
         shieldPlayer.Play("On");
-        DamageShield(entityScores.getRockDamage(hitBox.RockSize));
-        
+        DamageShield(hitBox.GetParent().Name == "OogShot"
+            ? entityScores.getOogShotDamage()
+            : entityScores.getRockDamage(hitBox.RockSize));
     }
 
     private void DamageShield(int damageAmount)

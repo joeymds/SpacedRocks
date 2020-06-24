@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using SpacedRocks.Common;
@@ -7,13 +8,16 @@ public class Main : Node
     private Global global;
     private PackedScene spaceRockScene;
     private PackedScene powerUpScene;
+    private PackedScene monsterScene;
     private Node rockSpawnLocations;
     private Node powerUpSpawnLocations;
     private Node assetContainer;
+    private Node monsterSpawnLocations;
     
     private int totalNumberOfRocks;
     private int levelRockCount;
     private int levelPowerUpCount;
+    private int levelMonsterCount;
 
     private SpawnPosition spawnPosition;
     private CountDown countDown;
@@ -30,6 +34,7 @@ public class Main : Node
         rockSpawnLocations = GetNode<Node>("RockSpawnLocations");
         powerUpSpawnLocations = GetNode<Node>("PowerUpSpawnLocations");
         assetContainer = GetNode<Node>("AssetContainer");
+        monsterSpawnLocations = GetNode<Node>("MonsterSpawnLocations");
         countDown = GetNode<CountDown>("CountDown");
         gameTrack = GetNode<AudioStreamPlayer>("GameTrack");
         camera = GetNode<Camera2D>("Camera2D");
@@ -37,10 +42,12 @@ public class Main : Node
         spawnPosition = new SpawnPosition(11);
         spaceRockScene = (PackedScene) ResourceLoader.Load("res://Scenes/Rock.tscn");
         powerUpScene = (PackedScene) ResourceLoader.Load("res://Scenes/PowerUp/PowerUp.tscn");
+        monsterScene = (PackedScene) ResourceLoader.Load("res://Scenes/GreenOog/GreenOog.tscn");
         
         totalNumberOfRocks = global.Level.NumberOfRocks;
         levelRockCount = global.Level.NumberOfRocks;
         levelPowerUpCount = global.Level.NumberOfPowerUps;
+        levelMonsterCount = global.Level.NumberOfMonsters;
 
         for (var i = 0; i < totalNumberOfRocks; i++)
         {
@@ -50,6 +57,9 @@ public class Main : Node
 
         for (var i = 0; i < levelPowerUpCount; i++)
             SpawnPowerUp(i);
+
+        for (var i = 0; i < levelMonsterCount; i++)
+            SpawnMonster(i);
 
         gameTrack.Play();    
         
@@ -63,6 +73,15 @@ public class Main : Node
         breakPattern.Add(Rock.RockSizes.Tiny, Rock.RockSizes.Dead);
     }
 
+    private void SpawnMonster(int positionIndex)
+    {
+        var monster = (GreenOog) monsterScene.Instance();
+        monster.StartPosition = monsterSpawnLocations.GetChild<Position2D>(positionIndex).Position;
+        assetContainer.AddChild(monster);
+        GD.Print(monster.StartPosition);
+        
+    }
+    
     private void SpawnPowerUp(int positionIndex)
     {
         var powerUp = (PowerUp) powerUpScene.Instance();

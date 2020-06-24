@@ -18,85 +18,64 @@ namespace SpacedRocks.Common
             {
                 LevelNumber = 1, 
                 LevelName = "Level01",
-                NumberOfRocks = 1,
-                NumberOfPowerUps = 2
+                NumberOfRocks = 0,
+                NumberOfPowerUps = 4,
+                NumberOfMonsters = 2,
+                NumberOfShieldOrbs = 1
             });
             levels.Add(new Level()
             {
                 LevelNumber = 2, 
                 LevelName = "Level02",
                 NumberOfRocks = 2,
-                NumberOfPowerUps = 2
+                NumberOfPowerUps = 1,
+                NumberOfMonsters = 0,
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
                 LevelNumber = 3, 
                 LevelName = "Level03",
                 NumberOfRocks = 3,
-                NumberOfPowerUps = 3
+                NumberOfPowerUps = 2,
+                NumberOfMonsters = 0,
+                NumberOfShieldOrbs = 1
             });
             levels.Add(new Level()
             {
                 LevelNumber = 4, 
                 LevelName = "Level04",
-                NumberOfRocks = 4,
-                NumberOfPowerUps = 3
+                NumberOfRocks = 3,
+                NumberOfPowerUps = 3,
+                NumberOfMonsters = 1,
+                NumberOfShieldOrbs = 1
             });
             levels.Add(new Level()
             {
                 LevelNumber = 5, 
                 LevelName = "Level05",
-                NumberOfRocks = 5,
-                NumberOfPowerUps = 3
+                NumberOfRocks = 4,
+                NumberOfPowerUps = 3,
+                NumberOfMonsters = 1,
+                NumberOfShieldOrbs = 2
             });
             levels.Add(new Level()
             {
                 LevelNumber = 6, 
                 LevelName = "Level06",
-                NumberOfRocks = 6,
-                NumberOfPowerUps = 3
+                NumberOfRocks = 4,
+                NumberOfPowerUps = 3,
+                NumberOfMonsters = 2,
+                NumberOfShieldOrbs = 3
             });
             levels.Add(new Level()
             {
                 LevelNumber = 7, 
                 LevelName = "Level07",
                 NumberOfRocks = 7,
-                NumberOfPowerUps = 4
-            });
-            levels.Add(new Level()
-            {
-                LevelNumber = 8, 
-                LevelName = "Level08",
-                NumberOfRocks = 8,
-                NumberOfPowerUps = 4
-            });
-            levels.Add(new Level()
-            {
-                LevelNumber = 9, 
-                LevelName = "Level09",
-                NumberOfRocks = 9,
-                NumberOfPowerUps = 4
-            });
-            levels.Add(new Level()
-            {
-                LevelNumber = 10, 
-                LevelName = "Level10",
-                NumberOfRocks = 10,
-                NumberOfPowerUps = 4
-            });
-            levels.Add(new Level()
-            {
-                LevelNumber = 11, 
-                LevelName = "Level11",
-                NumberOfRocks = 11,
-                NumberOfPowerUps = 5
-            });
-            levels.Add(new Level()
-            {
-                LevelNumber = 12, 
-                LevelName = "Level12",
-                NumberOfRocks = 12,
-                NumberOfPowerUps = 5
+                NumberOfPowerUps = 3,
+                NumberOfMonsters = 2,
+                NumberOfShieldOrbs = 2
             });
         }
 

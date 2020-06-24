@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Main.cs" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://Scenes/Pause.cs" type="Script" id=7]
 [ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://Scenes/Camera2D.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Scenes/GreenOog/GreenOog.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -60,24 +59,38 @@ position = Vector2( 455.044, 258.065 )
 [node name="Position11" type="Position2D" parent="RockSpawnLocations"]
 position = Vector2( 174.248, 142 )
 
+[node name="MonsterSpawnLocations" type="Node" parent="."]
+
+[node name="Position1" type="Position2D" parent="MonsterSpawnLocations"]
+position = Vector2( 102.834, -42.6102 )
+
+[node name="Position2" type="Position2D" parent="MonsterSpawnLocations"]
+position = Vector2( 529.077, -42.6102 )
+
+[node name="Position3" type="Position2D" parent="MonsterSpawnLocations"]
+position = Vector2( 102.834, 408.792 )
+
+[node name="Position4" type="Position2D" parent="MonsterSpawnLocations"]
+position = Vector2( 529.077, 408.792 )
+
 [node name="PowerUpSpawnLocations" type="Node" parent="."]
 
 [node name="Position1" type="Position2D" parent="PowerUpSpawnLocations"]
-position = Vector2( 145, 91.8783 )
+position = Vector2( 102.834, 94 )
 
 [node name="Position2" type="Position2D" parent="PowerUpSpawnLocations"]
-position = Vector2( 478.477, 91.8783 )
+position = Vector2( 529.077, 91.8783 )
 
 [node name="Position3" type="Position2D" parent="PowerUpSpawnLocations"]
-position = Vector2( 145, 298.715 )
+position = Vector2( 102.834, 298.715 )
 
 [node name="Position4" type="Position2D" parent="PowerUpSpawnLocations"]
-position = Vector2( 478.477, 298.715 )
+position = Vector2( 529.077, 298.715 )
+
+[node name="AssetContainer" type="Node" parent="."]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 320.013, 256.007 )
-
-[node name="AssetContainer" type="Node" parent="."]
 
 [node name="CountDown" parent="." instance=ExtResource( 5 )]
 
@@ -130,9 +143,6 @@ custom_fonts/font = SubResource( 1 )
 text = "Paused"
 
 [node name="Camera2D" parent="." instance=ExtResource( 9 )]
-
-[node name="GreenOog" parent="." instance=ExtResource( 10 )]
-position = Vector2( 400.359, 62 )
 
 [editable path="CountDown"]
 

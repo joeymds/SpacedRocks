@@ -37,7 +37,11 @@ namespace SpacedRocks.Common
                     return 0;
             }
         }
-        
+
+        public int getOogShotDamage()
+        {
+            return 15;
+        }
         
     }
 }

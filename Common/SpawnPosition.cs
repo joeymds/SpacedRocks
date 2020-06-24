@@ -23,7 +23,6 @@ namespace SpacedRocks.Common
             
             Random random = new Random();
             var nextIndex = random.Next(0, availableItems.Count);
-            GD.Print($"nextIndex = {nextIndex}");
             availableItems.RemoveAt(nextIndex);
             return nextIndex;
         }

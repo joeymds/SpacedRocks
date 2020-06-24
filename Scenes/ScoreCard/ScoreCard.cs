@@ -24,7 +24,6 @@ public class ScoreCard : Node2D
         else
             scoreTextLabel.Set("custom_colors/font_color", new Color(0.93f, 0.60f, 0.08f, 1));
         GlobalPosition = new Vector2(StartPosition.x, StartPosition.y - 30);
-        GD.Print(ScoreText);
     }
 
     private void EndScoreCard()

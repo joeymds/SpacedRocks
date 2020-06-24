@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Runtime.CompilerServices;
 using SpacedRocks.Common;
 
 public class GreenOog : KinematicBody2D
@@ -16,6 +14,7 @@ public class GreenOog : KinematicBody2D
     private Player player;
     private ScreenWrap screenWrap;
     private Timer shootIntervalTimer;
+    private Timer hurtTimer;
     private AnimationPlayer animationPlayer;
     private PackedScene ScoreCard;
     private PackedScene OogShoot;
@@ -25,8 +24,11 @@ public class GreenOog : KinematicBody2D
     [Export()] public double Friction = 25;
     [Export()] public int Health = 100;
     [Export()] public int ShootInterval = 3;  // How often the monster shoots 
+    [Export()] public Vector2 StartPosition = Vector2.Zero;
     
     private bool playerInRange = false;
+    private bool ableToShoot = true;
+    private bool vulnerable = true;
 
     public override void _Ready()
     {
@@ -38,6 +40,11 @@ public class GreenOog : KinematicBody2D
         screenWrap = new ScreenWrap(screenSize, 8);
         shootIntervalTimer.WaitTime = ShootInterval;
         animationPlayer.Play("Fly");
+        Position = StartPosition;
+        
+        hurtTimer = new Timer {WaitTime = 1, OneShot = true};
+        AddChild(hurtTimer);
+        hurtTimer.Connect("timeout", this, nameof(HurtOver));
     }
 
     public override void _PhysicsProcess(float delta)
@@ -51,7 +58,10 @@ public class GreenOog : KinematicBody2D
             case MonsterStates.Flying:
                 FlyingState(delta);
                 break;
-            case MonsterStates.Hurting:
+            case MonsterStates.Hurting: 
+                HurtingState(delta);
+                break;
+            case MonsterStates.Dying:
                 HurtingState(delta);
                 break;
             default:
@@ -82,23 +92,49 @@ public class GreenOog : KinematicBody2D
     }
 
     private void HurtingState(float delta)
-    {
-        
+    {    
+        velocity = velocity.MoveToward(Vector2.Zero, (float)Friction * delta);
     }
 
     public void TakeDamage(int damageAmount)
     {
+        if (vulnerable == false)
+            return;
+        
         Health -= damageAmount;
+        
+        if (Health <= 0)
+        {
+            hurtTimer.Stop();
+            vulnerable = false;
+            animationPlayer.Play("Dying");
+            monsterState = MonsterStates.Dying;
+            return;
+        }
+        
         var scoreCard = (ScoreCard) ScoreCard.Instance();
         scoreCard.ScoreText = Health.ToString();
         scoreCard.ScoreColour = global::ScoreCard.ScoreColours.Orange;
         scoreCard.StartPosition = GlobalPosition;
         GetParent().AddChild(scoreCard);
 
-        if (Health <= 0)
-        {
-            QueueFree();
-        }
+        monsterState = MonsterStates.Hurting;
+        animationPlayer.Play("Hurting");
+        ableToShoot = false;
+        if (hurtTimer.IsStopped())
+            hurtTimer.Start();
+    }
+
+    private void Died()
+    {
+        QueueFree();
+    }
+    
+    private void HurtOver()
+    {
+        ableToShoot = true;
+        monsterState = MonsterStates.Flying;
+        animationPlayer.Play("Fly");
     }
     
     private void OnPlayerDetectionBodyEntered(Node node)
@@ -120,6 +156,9 @@ public class GreenOog : KinematicBody2D
 
     private void OnShootIntervalTimeout()
     {
+        if (ableToShoot == false)
+            return;
+        
         animationPlayer.Play("Shoot");
         var oogShot = (OogShot) OogShoot.Instance();
         oogShot.StartPosition = GlobalPosition;
