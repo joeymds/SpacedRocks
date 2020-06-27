@@ -3,19 +3,19 @@ using System;
 
 public class CountDown : Node
 {
-    private AnimationPlayer _animationPlayer;
-    private Label _text;
+    private AnimationPlayer animationPlayer;
+    private Label text;
     
     public override void _Ready()
     {
-        _animationPlayer = GetNode<AnimationPlayer>("MarginContainer/CenterContainer/AnimationPlayer");
-        _text = GetNode<Label>("MarginContainer/CenterContainer/Text");
-        _text.Visible = false;
+        animationPlayer = GetNode<AnimationPlayer>("CanvasLayer/AnimationPlayer");
+        text = GetNode<Label>("CanvasLayer/Text");
+        text.Visible = false;
     }
 
     public void StartCountDown()
     {
-        _text.Visible = true;
-        _animationPlayer.Play("CountDown");
+        text.Visible = true;
+        animationPlayer.Play("CountDown");
     }
 }          

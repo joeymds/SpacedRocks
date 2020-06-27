@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/ES_Forest Run - Bonnie Grace.ogg-80a6479519831c0d37b6e64a4c70db69.oggstr"
+
+[deps]
+
+source_file="res://SFX/Tracks/ES_Forest Run - Bonnie Grace.ogg"
+dest_files=[ "res://.import/ES_Forest Run - Bonnie Grace.ogg-80a6479519831c0d37b6e64a4c70db69.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

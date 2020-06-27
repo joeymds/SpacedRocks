@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "tdWZ7Xof3NrZymk2nZhqItToEGoeMbQLmC+JZbbczPDpWC7n17qzt1bWcbGPw7IPKXpmdWyTVz7gtqRAVnt+Ew==",
+  "success": true,
+  "projectFilePath": "/Users/joey/dev/godot/SpacedRocks/Spaced Rocks.csproj",
+  "expectedPackageFiles": [
+    "/Users/joey/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.0/microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "/Users/joey/.nuget/packages/microsoft.netframework.referenceassemblies.net47/1.0.0/microsoft.netframework.referenceassemblies.net47.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -5,7 +5,7 @@
 [ext_resource path="res://Scenes/StarField/StarField.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/CountDown.tscn" type="PackedScene" id=5]
-[ext_resource path="res://SFX/Tracks/ES_Unfriendly Users - Marten Moses.ogg" type="AudioStream" id=6]
+[ext_resource path="res://SFX/Tracks/ES_Forest Run - Bonnie Grace.ogg" type="AudioStream" id=6]
 [ext_resource path="res://Scenes/Pause.cs" type="Script" id=7]
 [ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://Scenes/Camera2D.tscn" type="PackedScene" id=9]
@@ -93,12 +93,6 @@ position = Vector2( 529.077, 298.715 )
 position = Vector2( 320.013, 256.007 )
 
 [node name="CountDown" parent="." instance=ExtResource( 5 )]
-
-[node name="Text" parent="CountDown/MarginContainer/CenterContainer" index="0"]
-margin_left = 273.0
-margin_right = 296.0
-rect_scale = Vector2( 1, 1 )
-text = "1"
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
 margin_bottom = 54.0

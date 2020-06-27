@@ -11,5 +11,5 @@ dest_files=[ "res://.import/Rocket-thrust.ogg-f4f35b47923b49670c19da87ce3643b7.o
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

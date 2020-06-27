@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Game.cs" type="Script" id=1]
 [ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://GFX/buttons/blue-button-p.png" type="Texture" id=7]
 [ext_resource path="res://GFX/buttons/blue-button-D.png" type="Texture" id=8]
 [ext_resource path="res://GFX/buttons/blue-button-W.png" type="Texture" id=9]
+[ext_resource path="res://SFX/Tracks/ES_Unfriendly Users - Marten Moses.ogg" type="AudioStream" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 36
@@ -234,3 +235,7 @@ align = 1
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/GameUI"]
 autoplay = "Rock"
 anims/Rock = SubResource( 5 )
+
+[node name="SceneTrack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+autoplay = true

@@ -132,14 +132,14 @@ public class Player : KinematicBody2D
         {
             velocity = velocity.LinearInterpolate(moveDirection, (float) Acceleration);
             shipSprite.Play("Thrust");
-            thrustAudio.Play();
+            ThrustSound();
             thrustLight.Enabled = true;
         }
         else
         {
             velocity = velocity.LinearInterpolate(Vector2.Zero, (float) Friction);
             shipSprite.Play("Idle");
-            thrustAudio.Stop();
+            //thrustAudio.Stop();
             thrustLight.Enabled = false;
         }
         
@@ -162,6 +162,12 @@ public class Player : KinematicBody2D
     {
         QueueFree();
         GetTree().ChangeScene("res://Scenes/Game.tscn");
+    }
+
+    private void ThrustSound()
+    {
+        if (thrustAudio.Playing == false)
+            thrustAudio.Play();
     }
     
     private void Shoot()

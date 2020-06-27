@@ -11,6 +11,7 @@ public class PowerUp : KinematicBody2D
     private Vector2 velocity = Vector2.Zero;
     private Vector2 screenSize = Vector2.Zero;
     private AnimationPlayer animationPlayer;
+    private PackedScene ScoreCard;
     private readonly Vector2 spriteSize = new Vector2(25, 25);
     
     [Export()] public Vector2 startPosition = Vector2.Zero;
@@ -19,6 +20,7 @@ public class PowerUp : KinematicBody2D
     {
         consumeArea = GetNode<Area2D>("ConsumeArea");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        ScoreCard = (PackedScene) ResourceLoader.Load("res://Scenes/ScoreCard/ScoreCard.tscn");
         
         var rand = new Random();
         velocity = velocity.Length() > 0
@@ -51,8 +53,14 @@ public class PowerUp : KinematicBody2D
             return;
         
         consumed = true;
-        var Player = (Player) node;
-        Player.PowerUp();
+        var player = (Player) node;
+        player.PowerUp();
+        var scoreCard = (ScoreCard) ScoreCard.Instance();
+        scoreCard.ScoreText = "Power Up!";
+        scoreCard.StartPosition = GlobalPosition;
+        scoreCard.ScoreColour = global::ScoreCard.ScoreColours.Orange;
+        GetParent().AddChild(scoreCard);
+        
         animationPlayer.Play("Consumed");
 
     }

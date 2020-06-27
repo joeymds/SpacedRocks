@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using System.Collections.Generic;
 using SpacedRocks.Common;
@@ -15,7 +14,7 @@ public class Main : Node
     private Node monsterSpawnLocations;
     
     private int totalNumberOfRocks;
-    private int levelRockCount;
+    private int levelItems;
     private int levelPowerUpCount;
     private int levelMonsterCount;
 
@@ -45,7 +44,7 @@ public class Main : Node
         monsterScene = (PackedScene) ResourceLoader.Load("res://Scenes/GreenOog/GreenOog.tscn");
         
         totalNumberOfRocks = global.Level.NumberOfRocks;
-        levelRockCount = global.Level.NumberOfRocks;
+        levelItems = global.Level.TotalItems;
         levelPowerUpCount = global.Level.NumberOfPowerUps;
         levelMonsterCount = global.Level.NumberOfMonsters;
 
@@ -105,24 +104,24 @@ public class Main : Node
         
         if (newSize == Rock.RockSizes.Dead)
         {
-            UpdateRockLevel(-1);
+            UpdateLevelItems(-1);
             return;
         }
         
         foreach (var offset in offsets)
         {
-            UpdateRockLevel(1);
+            UpdateLevelItems(1);
             var newPosition = position + hitVelocity.Tangent().Clamped(25) * offset;
             var newVelocity = (velocity + hitVelocity.Tangent()) * offset;
             SpawnRock(newSize, newPosition, newVelocity);
         }
-        UpdateRockLevel(-1);
+        UpdateLevelItems(-1);
     }
 
-    private void UpdateRockLevel(int rocks)
+    private void UpdateLevelItems(int items)
     {
-        levelRockCount += rocks;
-        if (levelRockCount > 0) return;
+        levelItems += items;
+        if (levelItems > 0) return;
         countDown.StartCountDown();
     }
 

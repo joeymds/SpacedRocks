@@ -6,9 +6,8 @@ namespace SpacedRocks.Common
         public string LevelName { get; set; }
         public int NumberOfRocks { get; set; }
         public int NumberOfPowerUps { get; set; }
-        
         public int NumberOfMonsters { get; set; }
-        
         public int NumberOfShieldOrbs { get; set; }
+        public int TotalItems { get; set; }
     }
 }

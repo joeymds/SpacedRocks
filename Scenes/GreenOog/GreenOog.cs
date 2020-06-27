@@ -16,6 +16,8 @@ public class GreenOog : KinematicBody2D
     private Timer shootIntervalTimer;
     private Timer hurtTimer;
     private AnimationPlayer animationPlayer;
+    private AudioStreamPlayer2D hurtAudio2D;
+    private AudioStreamPlayer2D deathAudio2D;
     private PackedScene ScoreCard;
     private PackedScene OogShoot;
 
@@ -34,8 +36,12 @@ public class GreenOog : KinematicBody2D
     {
         shootIntervalTimer = GetNode<Timer>("ShootInterval");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        hurtAudio2D = GetNode<AudioStreamPlayer2D>("HurtAudio2D");
+        deathAudio2D = GetNode<AudioStreamPlayer2D>("DeathAudio2D");
+        
         ScoreCard = (PackedScene) ResourceLoader.Load("res://Scenes/ScoreCard/ScoreCard.tscn");
         OogShoot = (PackedScene) ResourceLoader.Load("res://Scenes/GreenOog/OogShot.tscn");
+        
         screenSize = GetViewportRect().Size;
         screenWrap = new ScreenWrap(screenSize, 8);
         shootIntervalTimer.WaitTime = ShootInterval;
@@ -107,11 +113,13 @@ public class GreenOog : KinematicBody2D
         {
             hurtTimer.Stop();
             vulnerable = false;
+            deathAudio2D.Play();
             animationPlayer.Play("Dying");
             monsterState = MonsterStates.Dying;
             return;
         }
         
+        hurtAudio2D.Play();
         var scoreCard = (ScoreCard) ScoreCard.Instance();
         scoreCard.ScoreText = Health.ToString();
         scoreCard.ScoreColour = global::ScoreCard.ScoreColours.Orange;
@@ -127,6 +135,7 @@ public class GreenOog : KinematicBody2D
 
     private void Died()
     {
+        GetTree().CallGroup("Main", "UpdateLevelItems", -1);
         QueueFree();
     }
     

@@ -9,7 +9,7 @@ public class OogShot : KinematicBody2D
     private AudioStreamPlayer2D audioPlayer;
     private Timer lifeSpan;
 
-    [Export()] public double Speed = 1.5;
+    [Export()] public double Speed = 1.8;
     [Export()] public double Acceleration = 5;
     [Export()] public double Friction = 10;
     [Export()] public int LifeSpan = 4;

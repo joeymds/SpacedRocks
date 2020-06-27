@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/monster-death.ogg-c546fc5d9db102202f48ffd1bb2671d7.oggstr"
+
+[deps]
+
+source_file="res://SFX/Death/monster-death.ogg"
+dest_files=[ "res://.import/monster-death.ogg-c546fc5d9db102202f48ffd1bb2671d7.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
