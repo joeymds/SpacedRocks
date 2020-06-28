@@ -32,17 +32,16 @@ public class Player : KinematicBody2D
     private bool powerUpInEffect = false;
 
     private Global global;
-    private AnimatedSprite shipSprite;
     private Node bulletContainer;
     private Position2D muzzle;
-    
+    private AnimationPlayer animationPlayer;
+
     private Light2D thrustLight;
     private Area2D shield;
     private AnimationPlayer shieldPlayer;
     
     private Timer gunTimer;
     private Timer shieldRechargeTimer;
-    private Timer powerUpTimer;
     private Timer powerUpTick;
 
     private ScreenWrap screenWrap;
@@ -58,8 +57,8 @@ public class Player : KinematicBody2D
     public override void _Ready()
     {
         global = GetTree().Root.GetNode<Global>("Global");
-        shipSprite = GetNode<AnimatedSprite>("Ship");
         bulletContainer = GetNode<Node>("BulletContainer");
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         muzzle = GetNode<Position2D>("Muzzle");
         shootSound = GetNode<AudioStreamPlayer>("Audio/ShootSound");
         thrustAudio = GetNode<AudioStreamPlayer>("Audio/ThrustSound");
@@ -131,15 +130,14 @@ public class Player : KinematicBody2D
         if (Input.IsActionPressed("thrust"))
         {
             velocity = velocity.LinearInterpolate(moveDirection, (float) Acceleration);
-            shipSprite.Play("Thrust");
+            animationPlayer.Play("Thrust");
             ThrustSound();
             thrustLight.Enabled = true;
         }
         else
         {
             velocity = velocity.LinearInterpolate(Vector2.Zero, (float) Friction);
-            shipSprite.Play("Idle");
-            //thrustAudio.Stop();
+            animationPlayer.Play("Idle");
             thrustLight.Enabled = false;
         }
         
@@ -155,13 +153,12 @@ public class Player : KinematicBody2D
     private void StateDead()
     {
         vulnerable = false;
-        shipSprite.Play("Explode");
     }
 
     private void PlayerIsNowDead()
     {
         QueueFree();
-        GetTree().ChangeScene("res://Scenes/Game.tscn");
+        GetTree().CallGroup("Global", "PlayerDeath");
     }
 
     private void ThrustSound()
@@ -180,7 +177,6 @@ public class Player : KinematicBody2D
             ? PlayerBullet.BulletStates.Powered
             : PlayerBullet.BulletStates.Standard);
         newBullet.StartAt(Rotation, muzzle.GlobalPosition);
-        shipSprite.Play("Shoot");
     }
 
     private void OnShieldAreaEntered(HitBox hitBox)
@@ -188,7 +184,6 @@ public class Player : KinematicBody2D
         if (vulnerable == false)
             return;
         
-        GD.Print(hitBox.GetParent().Name);
         shieldSound.Play();
         vulnerable = false;
         shieldPlayer.Play("On");
@@ -202,14 +197,16 @@ public class Player : KinematicBody2D
         Shield -= damageAmount;
         if (Shield <= 0)
         {
+            animationPlayer.Play("Die");
             Shield = 0;
-            global.GameOver = true;
             powerUpTick?.Stop();
-            RemoveChild(powerUpTick);
             playerState = PlayerStates.dead;
             shieldRechargeTimer.Stop();
         }
-        GetTree().CallGroup("Global", "UpdateShield", Shield);
+        else
+        {
+            GetTree().CallGroup("Global", "UpdateShield", Shield);
+        }
     }
     
     private void ShieldCollisionOver()

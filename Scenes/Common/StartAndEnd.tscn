@@ -1,0 +1,184 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scenes/Common/GameTitle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GFX/buttons/blue-button-A.png" type="Texture" id=3]
+[ext_resource path="res://GFX/buttons/blue-button-SPACE.png" type="Texture" id=4]
+[ext_resource path="res://GFX/buttons/blue-button-p.png" type="Texture" id=5]
+[ext_resource path="res://GFX/buttons/blue-button-D.png" type="Texture" id=6]
+[ext_resource path="res://GFX/buttons/blue-button-W.png" type="Texture" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 12
+outline_color = Color( 0.501961, 0.682353, 1, 1 )
+font_data = ExtResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="GameUI" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="GameUI"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 620.0
+margin_bottom = 340.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/CenterContainer"]
+margin_left = 127.0
+margin_top = 10.0
+margin_right = 473.0
+margin_bottom = 310.0
+custom_constants/separation = 25
+alignment = 1
+
+[node name="HBoxContainer" parent="GameUI/CenterContainer/VBoxContainer" instance=ExtResource( 2 )]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/CenterContainer/VBoxContainer"]
+margin_top = 91.0
+margin_right = 346.0
+margin_bottom = 197.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_right = 346.0
+margin_bottom = 18.0
+
+[node name="TextureRect" type="TextureRect" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 18.0
+margin_bottom = 18.0
+texture = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 22.0
+margin_top = 1.0
+margin_right = 188.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 1 )
+text = "Ship's Thrusters"
+valign = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 22.0
+margin_right = 346.0
+margin_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 18.0
+margin_bottom = 18.0
+texture = ExtResource( 3 )
+
+[node name="Label2" type="Label" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 22.0
+margin_top = 1.0
+margin_right = 165.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 1 )
+text = "Turn ship left"
+align = 1
+valign = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 346.0
+margin_bottom = 62.0
+
+[node name="TextureRect" type="TextureRect" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 18.0
+margin_bottom = 18.0
+texture = ExtResource( 6 )
+
+[node name="Label2" type="Label" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 22.0
+margin_top = 1.0
+margin_right = 171.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 1 )
+text = "Turn ship right"
+align = 1
+valign = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 66.0
+margin_right = 346.0
+margin_bottom = 84.0
+
+[node name="TextureRect" type="TextureRect" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
+margin_right = 49.0
+margin_bottom = 18.0
+texture = ExtResource( 4 )
+
+[node name="Label2" type="Label" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 53.0
+margin_top = 1.0
+margin_right = 113.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 1 )
+text = "shoot"
+align = 1
+valign = 1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 346.0
+margin_bottom = 106.0
+
+[node name="TextureRect" type="TextureRect" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_right = 18.0
+margin_bottom = 18.0
+texture = ExtResource( 5 )
+
+[node name="Label2" type="Label" parent="GameUI/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 22.0
+margin_top = 1.0
+margin_right = 133.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 1 )
+text = "pause game"
+align = 1
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/CenterContainer/VBoxContainer"]
+margin_top = 222.0
+margin_right = 346.0
+margin_bottom = 263.0
+custom_constants/margin_right = 100
+custom_constants/margin_top = 10
+custom_constants/margin_left = 100
+custom_constants/margin_bottom = 10
+
+[node name="StartButton" type="Button" parent="GameUI/CenterContainer/VBoxContainer/MarginContainer"]
+margin_left = 100.0
+margin_top = 10.0
+margin_right = 246.0
+margin_bottom = 31.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color_disabled = Color( 0.501961, 0.682353, 1, 1 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GameUI/CenterContainer/VBoxContainer"]
+margin_top = 288.0
+margin_right = 346.0
+margin_bottom = 300.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.501961, 0.682353, 1, 1 )
+text = "by Joey Matos Dos Santos"
+align = 1

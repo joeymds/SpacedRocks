@@ -5,10 +5,12 @@ namespace SpacedRocks.Common
     public class GameLevels
     {
         private readonly List<Level> levels = new List<Level>();
-        private int levelIndex = -1;
 
+        public int LevelIndex { get; set; }
+        
         public GameLevels()
         {
+            LevelIndex = -1;
             InitLevels();
         }
         
@@ -24,6 +26,7 @@ namespace SpacedRocks.Common
                 NumberOfShieldOrbs = 0,
                 TotalItems = 1
             });
+            
             levels.Add(new Level()
             {
                 LevelNumber = 2, 
@@ -114,17 +117,42 @@ namespace SpacedRocks.Common
                 NumberOfShieldOrbs = 0,
                 TotalItems = 10
             });
+            levels.Add(new Level()
+            {
+                LevelNumber = 11, 
+                LevelName = "Two Nightmares",
+                NumberOfRocks = 4,
+                NumberOfPowerUps = 5,
+                NumberOfMonsters = 6,
+                NumberOfShieldOrbs = 0,
+                TotalItems = 10
+            });
+            levels.Add(new Level()
+            {
+                LevelNumber = 12, 
+                LevelName = "Pure Death",
+                NumberOfRocks = 3,
+                NumberOfPowerUps = 5,
+                NumberOfMonsters = 8,
+                NumberOfShieldOrbs = 0,
+                TotalItems = 10
+            });
         }
 
         public void ResetLevels()
         {
-            levelIndex = -1;
+            LevelIndex = -1;
         }
 
         public Level GetNextLevel()
         {
-            levelIndex++;
-            return levels[levelIndex];
+            LevelIndex++;
+            return levels[LevelIndex];
+        }
+
+        public int NumberOfLevels()
+        {
+            return levels.Count;
         }
     }
 }

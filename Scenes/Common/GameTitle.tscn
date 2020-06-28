@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Fonts/spaceranger.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://GFX/Rocks/logo-rock-01.png" type="Texture" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 36
+outline_size = 2
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=2]
+length = 8.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect:rect_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4, 6, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 90.0, 180.0, 270.0, 360.0 ]
+}
+
+[node name="HBoxContainer" type="HBoxContainer"]
+margin_right = 346.0
+margin_bottom = 66.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color( 0.788235, 0.886275, 0.960784, 1 )
+margin_right = 68.0
+margin_bottom = 66.0
+rect_rotation = 360.0
+rect_pivot_offset = Vector2( 34, 33 )
+texture = ExtResource( 2 )
+
+[node name="Logo" type="Label" parent="."]
+margin_left = 72.0
+margin_top = 16.0
+margin_right = 346.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_outline_modulate = Color( 0.360784, 0.568627, 0.894118, 1 )
+text = "Space Rubble"
+align = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Rock"
+anims/Rock = SubResource( 2 )

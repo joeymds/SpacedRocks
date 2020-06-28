@@ -1,0 +1,5 @@
+/Users/joey/dev/godot/SpacedRocks/.mono/temp/bin/ExportDebug/Spaced Rocks.dll
+/Users/joey/dev/godot/SpacedRocks/.mono/temp/bin/ExportDebug/Spaced Rocks.pdb
+/Users/joey/dev/godot/SpacedRocks/.mono/temp/obj/ExportDebug/Spaced Rocks.csprojAssemblyReference.cache
+/Users/joey/dev/godot/SpacedRocks/.mono/temp/obj/ExportDebug/Spaced Rocks.dll
+/Users/joey/dev/godot/SpacedRocks/.mono/temp/obj/ExportDebug/Spaced Rocks.pdb

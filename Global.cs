@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using SpacedRocks.Common;
 
 public class Global : Node2D
@@ -23,6 +24,8 @@ public class Global : Node2D
     public int PowerUpCountDown { get; set; }
     public bool GameOver { get; set; }
     public LevelStates LevelState { get; set; }
+    public int MonsterCount { get; set; }
+    public int LevelCount { get; set; }
 
     public Global()
     {
@@ -31,6 +34,7 @@ public class Global : Node2D
         NormalBulletTexture = ResourceLoader.Load("res://GFX/Bullets/Bullet-01.png") as Texture;
         PoweredBulletTexture = ResourceLoader.Load("res://GFX/Bullets/Bullet-02.png") as Texture;
         LevelState = LevelStates.Active;
+        LevelCount = 1;
     }
     
     public Level Level => currentLevel;
@@ -48,14 +52,17 @@ public class Global : Node2D
 
     public void UpdateRockCount(int rockCount)
     {
-        RockCount = rockCount;
+        RockCount += rockCount;
     }
 
     public void ResetGame()
     {
         gameLevels.ResetLevels();
         PlayerScore = 0;
+        MonsterCount = 0;
+        LevelCount = 0;
         PowerUpCountDown = 0;
+        RockCount = 0;
         GameOver = false;
         currentLevel = gameLevels.GetNextLevel();
     }
@@ -78,8 +85,22 @@ public class Global : Node2D
     private void AdvanceLevel()
     {
         PowerUpCountDown = 0;
-        currentLevel = gameLevels.GetNextLevel();
-        LevelState = LevelStates.Active;
+        if ((gameLevels.NumberOfLevels() - 1) == gameLevels.LevelIndex)
+        {
+            GetTree().ChangeScene("res://Scenes/EndGame/EndGame.tscn");
+        } 
+        else
+        {
+            currentLevel = gameLevels.GetNextLevel();
+            LevelCount = currentLevel.LevelNumber;
+            LevelState = LevelStates.Active;
+            GetTree().ChangeScene("res://Scenes/Main.tscn");
+        }
+    }
+
+    private void PlayerDeath()
+    {
+        GetTree().ChangeScene("res://Scenes/EndGame/EndGame.tscn");
     }
 
 }

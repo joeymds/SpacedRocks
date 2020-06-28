@@ -27,7 +27,6 @@ Global="*res://Global.cs"
 
 window/size/width=640
 window/size/height=360
-window/size/resizable=false
 window/size/always_on_top=true
 window/size/test_width=1280
 window/size/test_height=720

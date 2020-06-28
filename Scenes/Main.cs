@@ -77,8 +77,6 @@ public class Main : Node
         var monster = (GreenOog) monsterScene.Instance();
         monster.StartPosition = monsterSpawnLocations.GetChild<Position2D>(positionIndex).Position;
         assetContainer.AddChild(monster);
-        GD.Print(monster.StartPosition);
-        
     }
     
     private void SpawnPowerUp(int positionIndex)
@@ -116,6 +114,7 @@ public class Main : Node
             SpawnRock(newSize, newPosition, newVelocity);
         }
         UpdateLevelItems(-1);
+        global.UpdateRockCount(1);
     }
 
     private void UpdateLevelItems(int items)
@@ -129,6 +128,5 @@ public class Main : Node
     {
         QueueFree();
         GetTree().CallGroup("Global", "AdvanceLevel");
-        GetTree().ChangeScene("res://Scenes/Main.tscn");
     }
 }
