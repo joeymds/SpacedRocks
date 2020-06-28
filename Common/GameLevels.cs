@@ -23,10 +23,8 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 1,
                 NumberOfPowerUps = 0,
                 NumberOfMonsters = 0,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 1
+                NumberOfShieldOrbs = 0
             });
-            
             levels.Add(new Level()
             {
                 LevelNumber = 2, 
@@ -34,8 +32,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 2,
                 NumberOfPowerUps = 0,
                 NumberOfMonsters = 0,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 2
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -44,8 +41,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 3,
                 NumberOfPowerUps = 1,
                 NumberOfMonsters = 0,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 3
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -54,8 +50,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 3,
                 NumberOfPowerUps = 2,
                 NumberOfMonsters = 0,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 3
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -64,8 +59,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 4,
                 NumberOfPowerUps = 3,
                 NumberOfMonsters = 0,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 4
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -74,8 +68,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 2,
                 NumberOfPowerUps = 2,
                 NumberOfMonsters = 1,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 3
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -84,8 +77,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 3,
                 NumberOfPowerUps = 3,
                 NumberOfMonsters = 1,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 4
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -94,8 +86,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 3,
                 NumberOfPowerUps = 4,
                 NumberOfMonsters = 2,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 5
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -104,8 +95,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 3,
                 NumberOfPowerUps = 4,
                 NumberOfMonsters = 3,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 6
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -114,8 +104,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 5,
                 NumberOfPowerUps = 5,
                 NumberOfMonsters = 5,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 10
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -124,8 +113,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 4,
                 NumberOfPowerUps = 5,
                 NumberOfMonsters = 6,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 10
+                NumberOfShieldOrbs = 0
             });
             levels.Add(new Level()
             {
@@ -134,8 +122,7 @@ namespace SpacedRocks.Common
                 NumberOfRocks = 3,
                 NumberOfPowerUps = 5,
                 NumberOfMonsters = 8,
-                NumberOfShieldOrbs = 0,
-                TotalItems = 10
+                NumberOfShieldOrbs = 0
             });
         }
 

@@ -44,7 +44,7 @@ public class Main : Node
         monsterScene = (PackedScene) ResourceLoader.Load("res://Scenes/GreenOog/GreenOog.tscn");
         
         totalNumberOfRocks = global.Level.NumberOfRocks;
-        levelItems = global.Level.TotalItems;
+        levelItems = global.LevelDestroyableItemsCount();
         levelPowerUpCount = global.Level.NumberOfPowerUps;
         levelMonsterCount = global.Level.NumberOfMonsters;
 

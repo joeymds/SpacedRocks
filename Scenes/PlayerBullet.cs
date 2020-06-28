@@ -60,26 +60,27 @@ public class PlayerBullet : Area2D
     }
     
     private void OnPlayerBulletBodyEntered(Node node)
-    { 
-        if (node.Name.Contains("Rock"))
-        {
-            var rock = (Rock) node;
-            rock.Explode(rock.rockSize, rock.rockVelocity, velocity.Normalized());
-            var entityScores = new EntityScores();
-            var rockScore = entityScores.getRockScore(rock.rockSize);
-            GetTree().CallGroup("Global", "RockHit", rockScore);
-            GetTree().CallGroup("Camera", "RockHit");
-            QueueFree();
-        }
-
-        if (node.Name.Contains("GreenOog"))
-        {
-            var greenOog = (GreenOog) node;
-            greenOog.TakeDamage(5);
-            QueueFree();
-        }
+    {
+        if (!node.Name.Contains("Rock")) return;
+        
+        var rock = (Rock) node;
+        rock.Explode(rock.rockSize, rock.rockVelocity, velocity.Normalized());
+        var entityScores = new EntityScores();
+        var rockScore = entityScores.getRockScore(rock.rockSize);
+        GetTree().CallGroup("Global", "RockHit", rockScore);
+        GetTree().CallGroup("Camera", "RockHit");
+        QueueFree();
     }
 
+    private void OnPlayerBulletAreaEntered(Area2D area)
+    {
+        if (area.Name != "GreenOogSkin") return;
+        
+        var greenOog = (GreenOog) area.GetParent();
+        greenOog.TakeDamage(5);
+        QueueFree();
+    }
+    
     private void OnLifetimeTimeout()
     {
         QueueFree();

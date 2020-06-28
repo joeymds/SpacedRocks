@@ -8,6 +8,5 @@ namespace SpacedRocks.Common
         public int NumberOfPowerUps { get; set; }
         public int NumberOfMonsters { get; set; }
         public int NumberOfShieldOrbs { get; set; }
-        public int TotalItems { get; set; }
     }
 }

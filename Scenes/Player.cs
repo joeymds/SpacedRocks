@@ -184,10 +184,11 @@ public class Player : KinematicBody2D
         if (vulnerable == false)
             return;
         
-        shieldSound.Play();
         vulnerable = false;
+        shieldSound.Play();
         shieldPlayer.Play("On");
-        DamageShield(hitBox.GetParent().Name == "OogShot"
+
+        DamageShield(hitBox.GetParent().Name.Contains("OogShot")
             ? entityScores.getOogShotDamage()
             : entityScores.getRockDamage(hitBox.RockSize));
     }

@@ -55,6 +55,11 @@ public class Global : Node2D
         RockCount += rockCount;
     }
 
+    public void UpdateMonsterCount(int monsterCount)
+    {
+        MonsterCount += monsterCount;
+    }
+
     public void ResetGame()
     {
         gameLevels.ResetLevels();
@@ -72,11 +77,16 @@ public class Global : Node2D
         PowerUpCountDown = value;
     }
 
+    public int LevelDestroyableItemsCount()
+    {
+        return currentLevel.NumberOfRocks + currentLevel.NumberOfMonsters;
+    }
+
     private void UpdateShield(int shieldValue)
     {
         Shield = shieldValue;
     }
-    
+
     private void FinishedLevel()
     {
         LevelState = LevelStates.Complete;

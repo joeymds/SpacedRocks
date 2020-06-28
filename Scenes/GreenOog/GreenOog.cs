@@ -3,9 +3,9 @@ using SpacedRocks.Common;
 
 public class GreenOog : KinematicBody2D
 {
-    public enum MonsterStates
+    private enum MonsterStates
     {
-        Flying, Idle, Hurting, Dying, Dead
+        Flying, Idle, Hurting, Dying
     }
 
     private MonsterStates monsterState = MonsterStates.Idle;
@@ -136,6 +136,7 @@ public class GreenOog : KinematicBody2D
     private void Died()
     {
         GetTree().CallGroup("Main", "UpdateLevelItems", -1);
+        GetTree().CallGroup("Global", "UpdateMonsterCount", 1);
         QueueFree();
     }
     
