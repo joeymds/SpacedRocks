@@ -8,3 +8,4 @@
 /Users/joey/dev/godot/SpacedRocks/.mono/temp/obj/Debug/Spaced Rocks.pdb
 /Users/joey/dev/godot/SpacedRocks/.mono/temp/bin/Debug/Spaced Rocks.dll
 /Users/joey/dev/godot/SpacedRocks/.mono/temp/bin/Debug/Spaced Rocks.pdb
+/Users/joey/dev/godot/SpacedRocks/.mono/temp/obj/Debug/Spaced Rocks.csproj.CoreCompileInputs.cache
